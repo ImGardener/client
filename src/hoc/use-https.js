@@ -8,7 +8,6 @@ const initialState = { status: "", error: null, data: null };
 
 // reducer
 const httpRequestReducer = (state, action) => {
-  console.log(action.value);
   switch (action.type) {
     case PENDING:
       return {
@@ -34,11 +33,11 @@ const httpRequestReducer = (state, action) => {
 };
 
 // http request hook
-const useHttp = (requestFunction) => {
+const useHttp = () => {
   const [state, dispatch] = useReducer(httpRequestReducer, initialState);
 
   // http request function
-  const requestHandler = async (requestData) => {
+  const requestHandler = async (requestFunction, requestData) => {
     dispatch({ type: PENDING });
     try {
       const responseData = await requestFunction(requestData);
@@ -49,6 +48,7 @@ const useHttp = (requestFunction) => {
       // }
       //if success, update state status to SUCCESS and data
       dispatch({ type: SUCCESS, value: responseData });
+      return responseData;
     } catch (error) {
       const errorMessage = error ? error : "request is failed";
       dispatch({ type: ERROR, value: errorMessage });
