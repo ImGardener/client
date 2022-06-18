@@ -1,9 +1,9 @@
 .container {
-  margin: 5rem 5rem 5rem 17rem;
+  margin: 0rem 0rem 0rem 12rem;
   text-align: center;
 }
 @media screen and (max-width: 760px) {
   .container {
-    margin: 2rem;
+    margin: 0rem;
   }
 }

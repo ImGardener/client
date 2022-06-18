@@ -13,10 +13,26 @@
   font-family: "Teko", sans-serif;
   font-size: 40px;
 }
-.header .header__login {
+/* .header .header__login {
   font-size: 20px;
   font-weight: 700;
   border: 2px solid black;
   padding: 5px 7px 7px 5px;
   border-radius: 10px;
+} */
+.header__btn {
+  background-color: white;
+  border: 2px solid var(--color-main-green);
+  color: var(--color-main-green);
+  box-shadow: none;
+}
+
+.header__btn:focus {
+  outline: none;
+}
+
+.header__btn:hover,
+.header__btn:active {
+  background: transparent;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.26);
 }
