@@ -1,0 +1,23 @@
+.search-input__container {
+  position: relative;
+  font-family: "Open Sans", sans-serif;
+  appearance: none;
+  background: #ffffff;
+  border-radius: 0.375em;
+  border: solid 1px rgba(210, 215, 217, 0.75);
+  color: inherit;
+  outline: 0;
+  padding: 0 1em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-input__input {
+  border: none;
+  width: 90%;
+}
+.search__icon {
+  width: 10%;
+  display: inline-block;
+}
