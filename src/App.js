@@ -5,6 +5,7 @@ import Layout from "./component/UI/Layout/Layout";
 
 import { Provider } from "react-redux";
 import store from "./store/index";
+import Main from "./pages/Main";
 function App() {
   return (
     <div className="App">
@@ -12,7 +13,7 @@ function App() {
         <Layout>
           <Switch>
             <Route path="/">
-              <Search />
+              <Main />
             </Route>
             <Route path="/serach">
               <Search></Search>

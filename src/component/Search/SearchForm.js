@@ -6,7 +6,7 @@ import {
   getCategoryList,
   getInsttList,
   getVarietyList,
-} from "../../utils/plant-apis";
+} from "../../utils/search-apis";
 import useHttp from "../../hoc/use-https";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

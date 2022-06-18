@@ -7,4 +7,10 @@ module.exports = (app) => {
       changeOrigin: true,
     })
   );
+  app.use(
+    createProxyMiddleware("/NihhsTodayFlowerInfo01", {
+      target: "http://apis.data.go.kr/1390804",
+      changeOrigin: true,
+    })
+  );
 };

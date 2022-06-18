@@ -1,0 +1,27 @@
+.flower-of-day {
+  display: flex;
+
+  background-color: var(--color-light-white);
+  align-items: center;
+  padding: 30px;
+  margin: 20px;
+  border-radius: var(--size-border-radius-large);
+}
+.flower__reco {
+  font-size: var(--font-large);
+  font-weight: var(--weight-bold);
+  text-align: left;
+  width: 50%;
+  line-height: 3rem;
+}
+.flower__name {
+  /* text-decoration: underline; */
+  border-bottom: 5px solid var(--color-main-light-green);
+  font-weight: var(--weight-bold);
+  font-size: var(--font-large);
+  color: var(--base);
+}
+.flower__img {
+  width: 50%;
+  border-radius: var(--size-border-radius-large);
+}

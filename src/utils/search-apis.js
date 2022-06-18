@@ -12,7 +12,7 @@ export const getInsttList = async () => {
     const parser = new DOMParser();
     const xml = parser.parseFromString(data, "text/xml");
 
-    const result = parseXmlToJson(xml);
+    const result = parseXmlToJson(xml).response;
 
     if (!response.ok) {
       throw new Error("request is failed!");
@@ -47,7 +47,7 @@ export const getCategoryList = async () => {
     const parser = new DOMParser();
     const xml = parser.parseFromString(data, "text/xml");
 
-    const result = parseXmlToJson(xml);
+    const result = parseXmlToJson(xml).response;
 
     if (!response.ok) {
       throw new Error("request is failed!");
@@ -90,7 +90,7 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     const parser = new DOMParser();
     const xml = parser.parseFromString(data, "text/xml");
 
-    const result = parseXmlToJson(xml);
+    const result = parseXmlToJson(xml).response;
 
     if (result.header.resultCode !== "00") {
       throw new Error(
