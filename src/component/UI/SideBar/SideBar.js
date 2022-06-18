@@ -29,14 +29,14 @@ const SideMnu = () => {
         <li className={classes["side-menu__item"]}>
           <FontAwesomeIcon icon={faSpa} />
           <a className={classes["item__title"]} href="elements.html">
-            My Plants
+            검색하기
           </a>
         </li>
 
         <li className={classes["side-menu__item"]}>
-          <FontAwesomeIcon icon={faBorderAll} />
+          <FontAwesomeIcon icon={faSpa} />
           <a className={classes["item__title"]} href="elements.html">
-            Notice
+            My Plants
           </a>
         </li>
         <li className={classes["side-menu__item"]}>
