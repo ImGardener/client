@@ -6,23 +6,14 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SearchInput from "../Input/SearchInput";
 
 const SideMnu = () => {
   return (
     <div className={classes.sidenav}>
       <section id="search" alt="" className={classes["search"]}>
-        <form method="post" action="#" className={classes["search__input"]}>
-          <input
-            type="text"
-            name="search"
-            id="search"
-            className={classes["search__input"]}
-            placeholder="Search"
-          />
-          <FontAwesomeIcon
-            icon={faSearch}
-            className={classes["search__icon"]}
-          />
+        <form method="post" action="#" className={classes["search__form"]}>
+          <SearchInput className={classes["search__input"]} />
         </form>
       </section>
       <ul className={classes["side-menu"]}>

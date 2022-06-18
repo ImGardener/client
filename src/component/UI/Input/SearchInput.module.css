@@ -16,6 +16,7 @@
 .search-input__input {
   border: none;
   width: 90%;
+  height: 2em;
 }
 .search__icon {
   width: 10%;

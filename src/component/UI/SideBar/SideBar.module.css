@@ -3,7 +3,7 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  position: fixed;
+  position: absolute;
   overflow: auto;
   background-color: rgba(60, 158, 83, 0.8);
 }
@@ -11,8 +11,7 @@
   padding: 1rem;
   border-bottom: 1px solid white;
 }
-.search__input {
-  padding: 0.5rem;
+.search__form {
   width: 100%;
   border: none;
   background-color: white;
@@ -22,9 +21,10 @@
 .search__icon {
   width: 10%;
 }
-.search__input input {
-  border: none;
+.search__input {
   width: 90%;
+  padding: 10px;
+  border: none;
 }
 
 .side-menu__item {
