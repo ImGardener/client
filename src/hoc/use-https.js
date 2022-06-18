@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 const SUCCESS = "SUCCESS";
 const ERROR = "ERROR";
 const PENDING = "PENDING";
@@ -24,7 +24,7 @@ const httpRequestReducer = (state, action) => {
     case ERROR:
       return {
         data: null,
-        error: action.value.error,
+        error: action.value,
         status: ERROR,
       };
     default:
@@ -37,23 +37,18 @@ const useHttp = () => {
   const [state, dispatch] = useReducer(httpRequestReducer, initialState);
 
   // http request function
-  const requestHandler = async (requestFunction, requestData) => {
+  const requestHandler = useCallback(async (requestFunction, requestData) => {
     dispatch({ type: PENDING });
     try {
       const responseData = await requestFunction(requestData);
-
-      // //if fail, throw error
-      // if (!response.ok) {
-      //   throw new Error(data?.message);
-      // }
-      //if success, update state status to SUCCESS and data
       dispatch({ type: SUCCESS, value: responseData });
+
       return responseData;
     } catch (error) {
       const errorMessage = error ? error : "request is failed";
       dispatch({ type: ERROR, value: errorMessage });
     }
-  };
+  }, []);
 
   return {
     requestHandler: requestHandler,

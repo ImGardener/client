@@ -1,35 +1,16 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import SearchForm from "../component/Search/SearchForm";
 import SearchList from "../component/Search/SearchList";
 
-const SEARCH = [
-  {
-    name: "apple",
-    description: "test~~~~~",
-    kind: "some",
-    other: "some",
-    id: 5,
-  },
-  {
-    name: "apple",
-    description: "test~~~~~",
-    kind: "some",
-    other: "some",
-    id: 11,
-  },
-  {
-    name: "apple",
-    description: "test~~~~~",
-    kind: "some",
-    other: "some",
-    id: 43,
-  },
-];
 const Search = () => {
+  const [searchResult, setSearchResult] = useState([]);
+  const searchHandler = (searchData) => {
+    setSearchResult(searchData);
+  };
   return (
     <Fragment>
-      <SearchForm />
-      <SearchList plants={[]} />
+      <SearchForm onSearch={searchHandler} />
+      <SearchList plants={searchResult} />
     </Fragment>
   );
 };

@@ -12,6 +12,7 @@ const SearchInput = (props) => {
         id="search"
         className={classes["search-input__input"]}
         placeholder="Search"
+        onChange={props.onChange}
       />
       <FontAwesomeIcon
         icon={faSearch}
