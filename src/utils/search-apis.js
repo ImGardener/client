@@ -16,7 +16,7 @@ export const getInsttList = async () => {
       throw new Error("request is failed!");
     }
     if (result.header.resultCode !== "00") {
-      throw new Error(result.headers.resultMsg);
+      throw new Error(result.header.resultMsg);
     }
 
     const instts = result.body.items.item.map((instt) => {

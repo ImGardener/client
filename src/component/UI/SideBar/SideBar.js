@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SearchInput from "../Input/SearchInput";
+import { Link } from "react-router-dom";
 
 const SideMnu = () => {
   return (
@@ -18,10 +19,10 @@ const SideMnu = () => {
       </section>
       <ul className={classes["side-menu"]}>
         <li className={classes["side-menu__item"]}>
-          <FontAwesomeIcon icon={faSpa} />
-          <a className={classes["item__title"]} href="elements.html">
+          <Link to={"/search"} className={classes["item__title"]}>
+            <FontAwesomeIcon icon={faSpa} />
             검색하기
-          </a>
+          </Link>
         </li>
 
         <li className={classes["side-menu__item"]}>

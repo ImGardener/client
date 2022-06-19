@@ -3,10 +3,10 @@ const initialStatusState = {
   status: "",
   message: null,
 };
-export function changeStatus(status, messge = "") {
+export function changeStatus(status, message = "") {
   return {
     type: CHANGE_STATUS,
-    data: { status, messge },
+    data: { status, message },
   };
 }
 
@@ -16,7 +16,7 @@ const statusReducer = (state = initialStatusState, action) => {
       return {
         ...state,
         status: action.data.status,
-        message: action.data.error,
+        message: action.data.message,
       };
 
     default:

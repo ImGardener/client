@@ -54,7 +54,7 @@ const SearchForm = (props) => {
 
     const result = await requestHandler(getVarietyList, config);
 
-    dispatch(changeStatus(status, error || null));
+    dispatch(changeStatus(status, error));
 
     props.onSearch(result);
   };
@@ -70,7 +70,6 @@ const SearchForm = (props) => {
           placeholder="품종명을 입력해주세요"
           onChange={searchWordChangeHandler}
         />
-        {/* <div className={classes["filter__container"]}> */}
         <SelectBox
           className={classes["filter"]}
           options={insttList}
@@ -83,7 +82,6 @@ const SearchForm = (props) => {
           onChange={categoryChangeHandler}
           placeholder="카테고리"
         />
-        {/* </div> */}
         <Button className={classes["search__controls"]}>Search</Button>
       </form>
     </div>

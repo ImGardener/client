@@ -6,7 +6,10 @@ const Layout = (props) => {
     <>
       <Headers />
       <SideBar />
-      <main className={classes.container}>{props.children}</main>
+
+      <div className={classes.container}>
+        <main className={classes["inner-container"]}>{props.children}</main>
+      </div>
     </>
   );
 };

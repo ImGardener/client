@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useReducer } from "react";
 const SUCCESS = "SUCCESS";
 const ERROR = "ERROR";
 const PENDING = "PENDING";
@@ -45,7 +45,7 @@ const useHttp = () => {
 
       return responseData;
     } catch (error) {
-      const errorMessage = error ? error : "request is failed";
+      const errorMessage = error ? error.message : "request is failed";
       dispatch({ type: ERROR, value: errorMessage });
     }
   }, []);

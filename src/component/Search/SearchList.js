@@ -6,11 +6,11 @@ import { useSelector } from "react-redux";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 const SearchList = (props) => {
   const status = useSelector((state) => state.status.status);
-  // const status2 = useSelector((state) => state.status.error);
-  console.log("here is SearchList", status);
+  const message = useSelector((state) => state.status.message);
   if (status === "PENDING") {
     return <LoadingSpinner />;
   }
+  console.log(message);
   if (status === "ERROR") {
     return (
       <div className={classes["search-list--empty"]}>
@@ -18,7 +18,7 @@ const SearchList = (props) => {
           className={classes["search-list__icon--empty"]}
           icon={faWarning}
         />
-        <p>오류가 발생했습니다.</p>
+        <p>{String(message)} </p>
       </div>
     );
   }
