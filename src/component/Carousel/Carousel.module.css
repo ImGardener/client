@@ -1,0 +1,43 @@
+.carousel {
+  position: relative;
+  display: flex;
+  width: 800px;
+  height: auto;
+  z-index: 1;
+  overflow: hidden;
+  margin: auto;
+}
+.plant__image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--size-border-radius-large);
+  position: relative;
+  -webkit-user-drag: none;
+}
+.slider__container {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+  cursor: pointer;
+  margin: auto;
+  /* gap: 0px; */
+}
+.slider__btn--left,
+.slider__btn--right {
+  position: absolute;
+  top: 50%;
+  border: none;
+  background-color: transparent;
+}
+.slider__btn--left {
+  left: var(--base-blank-small);
+}
+
+.slider__btn--right {
+  right: var(--base-blank-small);
+}
+@media screen and (max-width: 1280px) {
+  .carousel {
+    width: 80%;
+  }
+}

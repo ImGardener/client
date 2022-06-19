@@ -1,9 +1,30 @@
 .container {
-  margin: 0rem 0rem 0rem 12rem;
   text-align: center;
+  margin: auto;
+  height: 100vh;
+  position: relative;
+  margin: 0rem 0rem 0rem 12rem;
 }
+
+.inner-container {
+  max-width: 950px;
+  margin: auto;
+  padding-top: 50px;
+  width: 100%;
+}
+@media screen and (max-width: 1200px) {
+  .inner-container {
+    /* margin: 0 3rem; */
+  }
+}
+
 @media screen and (max-width: 760px) {
   .container {
     margin: 0rem;
+  }
+  .inner-container {
+    max-width: 500px;
+    margin: auto;
+    padding-top: 50px;
   }
 }

@@ -1,11 +1,13 @@
 import FlowerOfDay from "../component/FlowerOfDay/FlowerOfDay";
-import Splash from "../component/Splash/Splash";
+import Carousel from "../component/Carousel/Carousel";
+import { Fragment } from "react";
 const Main = () => {
   return (
-    <div>
-      <Splash />
+    <Fragment>
+      <Carousel />
       <FlowerOfDay />
-    </div>
+      <div className="bar-image" />
+    </Fragment>
   );
 };
 export default Main;

@@ -8,7 +8,6 @@ export const getTodayFlower = async (today) => {
 
     const response = await fetch(url, {
       method: "GET",
-      //   headers: { "content-type": "application/json" },
     });
     if (!response.ok) {
       throw new Error("request is failed!");
@@ -25,9 +24,10 @@ export const getTodayFlower = async (today) => {
       name: result.result.flowNm,
       img: result.result.imgUrl1,
       id: result.result.dataNo,
+      content: result.result.fContent,
     };
     return flowerInfo;
   } catch (error) {
-    alert(error);
+    throw error;
   }
 };

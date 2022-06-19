@@ -1,23 +1,22 @@
 const CHANGE_STATUS = "CHANGE_STATUS";
 const initialStatusState = {
   status: "",
-  error: null,
+  message: null,
 };
-export function changeStatus(status, error) {
+export function changeStatus(status, messge = "") {
   return {
     type: CHANGE_STATUS,
-    data: { status, error },
+    data: { status, messge },
   };
 }
 
 const statusReducer = (state = initialStatusState, action) => {
-  console.log("incomiing  action ", action);
   switch (action?.type) {
     case CHANGE_STATUS:
       return {
         ...state,
         status: action.data.status,
-        error: action.data.error,
+        message: action.data.error,
       };
 
     default:

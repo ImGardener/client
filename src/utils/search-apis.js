@@ -9,9 +9,7 @@ export const getInsttList = async () => {
     });
 
     let data = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, "text/xml");
-
+    const xml = new DOMParser().parseFromString(data, "text/xml");
     const result = parseXmlToJson(xml).response;
 
     if (!response.ok) {
@@ -30,7 +28,7 @@ export const getInsttList = async () => {
     });
     return instts;
   } catch (error) {
-    alert(error);
+    throw error;
   }
 };
 
@@ -64,7 +62,7 @@ export const getCategoryList = async () => {
     });
     return category;
   } catch (error) {
-    alert(error);
+    throw error;
   }
 };
 
@@ -93,9 +91,7 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     const result = parseXmlToJson(xml).response;
 
     if (result.header.resultCode !== "00") {
-      throw new Error(
-        `errorCode: ${result.header.resultCode} ${result.headers.resultMsg}`
-      );
+      throw new Error(result.headers.resultMsg);
     }
     let preVarieties = {};
     let varieties = [];
@@ -115,6 +111,6 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     }
     return varieties;
   } catch (error) {
-    alert(error);
+    throw error;
   }
 };

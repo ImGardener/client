@@ -26,12 +26,16 @@ const FlowerOfDay = (props) => {
 
   return (
     <div className={classes["flower-of-day"]}>
-      <p className={classes["flower__reco"]}>
-        오늘은 <br />
-        <span className={classes["flower__name"]}>{flowerInfo.name}</span>가
-        <br />
-        잘어울리는 날이예요!
-      </p>
+      <div className={classes["flower"]}>
+        <p className={classes["flower__rec"]}>
+          오늘은 <br />
+          <span className={classes["flower__name"]}>{flowerInfo?.name}</span>
+          (이)가
+          <br />
+          잘어울리는 날이예요!
+        </p>
+        <p className={classes["flower__content"]}>{flowerInfo?.content}</p>
+      </div>
       <img
         className={classes["flower__img"]}
         src={flowerInfo.img}

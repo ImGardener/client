@@ -12,10 +12,10 @@ function App() {
       <Provider store={store}>
         <Layout>
           <Switch>
-            <Route path="/">
+            <Route path="/" exact>
               <Main />
             </Route>
-            <Route path="/serach">
+            <Route path="/search" exact>
               <Search></Search>
             </Route>
           </Switch>
