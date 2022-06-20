@@ -1,7 +1,9 @@
 import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
 import Button from "../UI/Button/Button";
-import SearchInput from "../UI/Input/SearchInput";
+import Input from "../UI/Input/Input";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
 import {
   getCategoryList,
   getInsttList,
@@ -65,11 +67,23 @@ const SearchForm = (props) => {
         className={classes["search__form"]}
         onSubmit={submitSearchFormHandler}
       >
-        <SearchInput
+        {/* <SearchInput
           className={classes["search__search"]}
           placeholder="품종명을 입력해주세요"
           onChange={searchWordChangeHandler}
+        /> */}
+
+        <Input
+          input={{
+            type: "text",
+            name: "search",
+            placeholder: "품종명",
+          }}
+          onChange={searchWordChangeHandler}
+          inputClassName={classes["search__search"]}
+          icon={faSearch}
         />
+
         <SelectBox
           className={classes["filter"]}
           options={insttList}

@@ -9,16 +9,23 @@
   row-gap: 20px;
 }
 .search-list--empty {
-  padding: 50px;
-  font-size: 20px;
+  padding: var(--base-blank-medium);
+  font-size: var(--font-medium);
 }
 .search-list--empty .search-list__icon--empty {
-  font-size: 40px;
+  font-size: var(--font-large);
+  padding: var(--base-blank-medium);
 }
 @media screen and (max-width: 768px) {
   .search-list {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .search-list--empty,
+  .search-list--empty .search-list__icon--empty {
+    font-size: var(--font-small);
+    padding: var(--base-blank-small);
   }
 }
