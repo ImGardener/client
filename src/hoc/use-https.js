@@ -1,60 +1,36 @@
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer, useState } from "react";
 const SUCCESS = "SUCCESS";
 const ERROR = "ERROR";
 const PENDING = "PENDING";
 
-// reducer initial state
-const initialState = { status: "", error: null, data: null };
-
-// reducer
-const httpRequestReducer = (state, action) => {
-  switch (action.type) {
-    case PENDING:
-      return {
-        data: null,
-        error: null,
-        status: PENDING,
-      };
-    case SUCCESS:
-      return {
-        data: action.value,
-        error: null,
-        status: SUCCESS,
-      };
-    case ERROR:
-      return {
-        data: null,
-        error: action.value,
-        status: ERROR,
-      };
-    default:
-      return state;
-  }
-};
-
 // http request hook
 const useHttp = () => {
-  const [state, dispatch] = useReducer(httpRequestReducer, initialState);
+  const [status, setStatus] = useState(null);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
 
-  // http request function
   const requestHandler = useCallback(async (requestFunction, requestData) => {
-    dispatch({ type: PENDING });
+    setStatus(PENDING);
+    setError(null);
+    setData(null);
+
     try {
       const responseData = await requestFunction(requestData);
-      dispatch({ type: SUCCESS, value: responseData });
-
+      setStatus(SUCCESS);
+      setData(responseData);
       return responseData;
     } catch (error) {
+      setStatus(ERROR);
       const errorMessage = error ? error.message : "request is failed";
-      dispatch({ type: ERROR, value: errorMessage });
+      setError(errorMessage);
     }
   }, []);
 
   return {
     requestHandler: requestHandler,
-    error: state.error,
-    status: state.status,
-    data: state.data,
+    error: error,
+    status: status,
+    data: data,
   };
 };
 export default useHttp;
