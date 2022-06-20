@@ -1,6 +1,6 @@
 .button {
   font: inherit;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   color: white;
   background: rgba(60, 158, 83, 0.8);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
