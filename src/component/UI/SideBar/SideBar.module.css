@@ -1,6 +1,7 @@
 .sidenav {
   width: 12rem;
-  height: 100%;
+  /* minus header height */
+  height: calc(100% - 80px);
   margin: 0;
   padding: 0;
   position: absolute;

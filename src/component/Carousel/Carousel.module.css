@@ -18,7 +18,6 @@
   display: flex;
   width: 100%;
   transition: transform 0.5s ease-in-out;
-  cursor: pointer;
   margin: auto;
   /* gap: 0px; */
 }
@@ -28,6 +27,10 @@
   top: 50%;
   border: none;
   background-color: transparent;
+  transform: translateY(-50%);
+  font-size: var(--font-large);
+  color: white;
+  cursor: pointer;
 }
 .slider__btn--left {
   left: var(--base-blank-small);

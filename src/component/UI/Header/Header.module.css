@@ -13,6 +13,8 @@
 .header .header__logo {
   font-family: "Teko", sans-serif;
   font-size: 40px;
+  text-decoration: none;
+  color: black;
 }
 /* .header .header__login {
   font-size: 20px;

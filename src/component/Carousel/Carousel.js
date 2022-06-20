@@ -5,10 +5,7 @@ import plant from "../../assets/sample_plants.jpg";
 
 import Sliders from "./Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowAltCircleLeft,
-  faArrowAltCircleRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 const TOTAL_SLIDER = 3;
 const Carousel = () => {
   const [currentSlider, setCurrentSlider] = useState(0);
@@ -42,10 +39,10 @@ const Carousel = () => {
           className={classes["slider__btn--left"]}
           onClick={previousSlide}
         >
-          <FontAwesomeIcon icon={faArrowAltCircleLeft} />
+          <FontAwesomeIcon icon={faCaretLeft} />
         </button>
         <button className={classes["slider__btn--right"]} onClick={nextSlide}>
-          <FontAwesomeIcon icon={faArrowAltCircleRight} />
+          <FontAwesomeIcon icon={faCaretRight} />
         </button>
       </div>
     </Fragment>
