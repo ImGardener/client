@@ -1,0 +1,42 @@
+.join {
+  background-color: var(--color-main-light-green);
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
+  padding: var(--base-blank-medium);
+  border-radius: var(--size-border-radius-large);
+}
+.join-form {
+  width: 90%;
+  margin: auto;
+}
+
+.join__input {
+  margin-bottom: var(--base-blank-small);
+}
+.inValid {
+  border: 2px solid red;
+}
+.join__label {
+  color: white;
+}
+.join-form:first-child {
+  text-align: center;
+}
+.join__btn {
+  display: block;
+  margin: auto;
+}
+.join__btn {
+  background-color: white;
+  color: var(--color-main-light-green);
+  width: 50%;
+  height: 3rem;
+  margin-top: var(--base-blank-small);
+}
+.join__btn:hover {
+  background-color: white;
+  box-shadow: 0 0 8px rgb(216, 216, 216);
+}
+@media screen and (max-width: 760px) {
+}

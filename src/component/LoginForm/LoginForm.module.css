@@ -1,0 +1,42 @@
+.login {
+  background-color: var(--color-main-light-green);
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
+  padding: var(--base-blank-medium);
+  border-radius: var(--size-border-radius-large);
+}
+.login-form {
+  width: 90%;
+  margin: auto;
+}
+
+.login__input {
+  margin-bottom: var(--base-blank-small);
+}
+.login__label {
+  color: white;
+}
+.login-form:first-child {
+  text-align: center;
+}
+.join__btn {
+  display: block;
+  margin: auto;
+}
+.inValid {
+  border: 2px solid red;
+}
+.login__btn {
+  background-color: white;
+  color: var(--color-main-light-green);
+  width: 50%;
+  height: 3rem;
+  margin-top: var(--base-blank-small);
+}
+.login__btn:hover {
+  background-color: white;
+  box-shadow: 0 0 8px rgb(216, 216, 216);
+}
+@media screen and (max-width: 760px) {
+}

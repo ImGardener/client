@@ -1,0 +1,57 @@
+import { FIREBASE_KEY } from "./key-store";
+
+export const addUser = async (info) => {
+  try {
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_KEY}`;
+    let response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        email: info.email,
+        password: info.password,
+        returnSecureToken: true,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      let errorMessage = "authentication is failed!";
+      let responseJson = await response.json();
+      console.log(responseJson);
+
+      if (responseJson && responseJson.error?.message)
+        errorMessage = responseJson?.error.message;
+      throw new Error(errorMessage);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+export const getUser = async (info) => {
+  try {
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_KEY}`;
+    let response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        email: info.email,
+        password: info.password,
+        returnSecureToken: true,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      let errorMessage = "authentication is failed!";
+      let responseJson = await response.json();
+      console.log(responseJson);
+
+      if (responseJson && responseJson.error?.message)
+        errorMessage = responseJson?.error.message;
+      throw new Error(errorMessage);
+    }
+    let responseJson = await response.json();
+
+    return { token: responseJson.idToken, expiresIn: responseJson.expiresIn };
+  } catch (error) {
+    throw error;
+  }
+};
