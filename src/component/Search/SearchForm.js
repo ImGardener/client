@@ -1,22 +1,15 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { getCategoryList, getInsttList } from "../../utils/search-apis";
+import { searchThunk } from "../../store/modules/search";
 
-import {
-  getCategoryList,
-  getInsttList,
-  getVarietyList,
-} from "../../utils/search-apis";
-import useHttp from "../../hoc/use-https";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { changeStatus } from "../../store/modules/status";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-
-const SearchForm = (props) => {
-  const { requestHandler, error, status } = useHttp();
+const SearchForm = () => {
   const [insttList, setInsttList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [instt, setInstt] = useState("");
@@ -24,15 +17,18 @@ const SearchForm = (props) => {
   const [searchWord, setSearchWord] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
+
   useEffect(() => {
-    Promise.all([
-      requestHandler(getInsttList),
-      requestHandler(getCategoryList),
-    ]).then(([reponse1, reponse2]) => {
-      setInsttList(reponse1);
-      setCategoryList(reponse2);
-    });
-  }, [requestHandler]);
+    Promise.all([getInsttList(), getCategoryList()])
+      .then(([reponse1, reponse2]) => {
+        setInsttList(reponse1);
+        setCategoryList(reponse2);
+      })
+      .catch((e) => {
+        // 오류처리하기
+        alert(e);
+      });
+  }, []);
 
   useEffect(() => {
     if (location.state?.searchWord) {
@@ -57,19 +53,12 @@ const SearchForm = (props) => {
     await searchPlants(searchWord);
   };
   const searchPlants = async (word) => {
-    dispatch(changeStatus("PENDING"));
-
     const config = {
       insttName: instt,
       category,
       svcCodeNm: word,
     };
-
-    const result = await requestHandler(getVarietyList, config);
-
-    dispatch(changeStatus(status, error));
-
-    props.onSearch(result);
+    dispatch(searchThunk(config));
   };
 
   return (

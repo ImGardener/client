@@ -11,6 +11,8 @@ export function changeStatus(status, message = "") {
 }
 
 const statusReducer = (state = initialStatusState, action) => {
+  console.log("call reducer");
+
   switch (action?.type) {
     case CHANGE_STATUS:
       return {

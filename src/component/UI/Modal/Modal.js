@@ -1,13 +1,10 @@
 import ReactDOM from "react-dom";
 
 import BackDropUI from "./BackDropUI";
-import classes from "./Modal.module.css";
 import ModalUI from "./ModalUI";
 
 const Modal = (props) => {
-  console.log(props);
   return (
-    // <div className={classes["modal"]}>
     <>
       {ReactDOM.createPortal(
         <BackDropUI />,
@@ -22,7 +19,6 @@ const Modal = (props) => {
         document.getElementById("overlays")
       )}
     </>
-    // </div>
   );
 };
 

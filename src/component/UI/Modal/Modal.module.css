@@ -19,7 +19,7 @@
   border-radius: var(--size-border-radius-large);
   text-align: center;
   padding: var(--base-blank-small);
-  z-index: 1;
+  z-index: 4;
 }
 .modal-ui__content {
   padding-top: 10%;
@@ -42,7 +42,7 @@
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
-  z-index: 1;
+  z-index: 3;
 }
 @media screen and (max-width: 760px) {
   .modal-ui__content {

@@ -1,11 +1,9 @@
 import classes from "./FlowerOfDay.module.css";
 import { useEffect } from "react";
-import useHttp from "../../hoc/use-https";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
 
 const FlowerOfDay = (props) => {
-  const { requestHandler } = useHttp();
   const [flowerInfo, setFlowerInfo] = useState({
     name: "장미",
     img: "",
@@ -14,15 +12,18 @@ const FlowerOfDay = (props) => {
   useEffect(() => {
     const today = new Date();
     const getFlowerOfDay = async () => {
-      const day = {
-        month: today.getMonth() + 1,
-        day: today.getDate(),
-      };
-      const result = await requestHandler(getTodayFlower, day);
-      setFlowerInfo(result);
+      try {
+        const day = {
+          month: today.getMonth() + 1,
+          day: today.getDate(),
+        };
+        const result = await getTodayFlower(day);
+        setFlowerInfo(result);
+      } catch (error) {}
     };
+
     getFlowerOfDay();
-  }, [requestHandler]);
+  }, []);
 
   return (
     <div className={classes["flower-of-day"]}>

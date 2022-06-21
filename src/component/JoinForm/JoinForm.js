@@ -1,18 +1,18 @@
 import useInput from "../../hoc/use-input";
-import useHttp from "../../hoc/use-https";
-
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import classes from "./JoinForm.module.css";
-import { addUser } from "../../utils/auth-apis";
+import { addUser } from "../../utils/user-apis";
 import Modal from "../UI/Modal/Modal";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 
-const JoinForm = (props) => {
+const JoinForm = () => {
   const [modal, setModal] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const {
     value: enteredEmail,
     hasError: emailHasError,
@@ -28,40 +28,35 @@ const JoinForm = (props) => {
     focusHandler: passwordFocusHandler,
   } = useInput(isPasswordValid);
 
-  const { requestHandler, error, status } = useHttp();
   const history = useHistory();
-  useEffect(() => {
-    if (status === "SUCCESS") {
+
+  const submitJoinForm = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await addUser({
+        email: enteredEmail,
+        password: enteredPassword,
+      });
       setModal({
-        type: status,
+        type: "SUCCESS",
         message: "가입되었습니다!",
         callback: () => {
           setModal(null);
           history.replace("/login");
         },
       });
-    }
-    if (status === "ERROR") {
+    } catch (error) {
       setModal({
-        type: status,
-        message: error,
-        callback: () => {
-          setModal(null);
-        },
+        type: "ERROR",
+        message: error?.message,
       });
+    } finally {
+      setLoading(false);
     }
-  }, [status]);
-
-  const submitJoinForm = async (e) => {
-    e.preventDefault();
-
-    await requestHandler(addUser, {
-      email: enteredEmail,
-      password: enteredPassword,
-    });
   };
 
-  if (status === "PENDING") return <LoadingSpinner />;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className={classes.join}>
@@ -108,7 +103,7 @@ const JoinForm = (props) => {
           message={modal.message}
           type={modal.type}
           onClose={
-            modal.callback &&
+            modal.callback ||
             (() => {
               setModal(null);
             })

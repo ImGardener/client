@@ -5,22 +5,33 @@ import Modal from "../UI/Modal/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import classes from "./LoginForm.module.css";
 import useInput from "../../hoc/use-input";
-import useHttp from "../../hoc/use-https";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
-import { getUser } from "../../utils/auth-apis";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../store/modules/login";
-const LoginForm = (props) => {
+const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [modal, setModal] = useState(null);
-  const { requestHandler, error, status, data } = useHttp();
+  const isLoading = useSelector((state) => state.login.loading);
+  const error = useSelector((state) => state.login.error);
+  const isLogin = useSelector((state) => state.login.isLogin);
 
-  const changeJoinFormHandler = () => {
-    history.push("/join");
-  };
+  const changeJoinFormHandler = () => {};
+  useEffect(() => {
+    if (error) {
+      setModal({
+        type: "ERROR",
+        message: error,
+      });
+    }
+  }, [error]);
+  useEffect(() => {
+    if (isLogin) {
+      history.push("/");
+    }
+  }, [isLogin, history]);
 
   const {
     value: enteredEmail,
@@ -37,39 +48,24 @@ const LoginForm = (props) => {
     focusHandler: passwordFocusHandler,
   } = useInput(isPasswordValid);
 
-  useEffect(() => {
-    if (status === "SUCCESS") {
-      dispatch(loginThunk(data));
-      history.replace("/");
-    }
-    if (status === "ERROR") {
-      setModal({
-        type: status,
-        message: error,
-        callback: () => {
-          setModal(null);
-        },
-      });
-    }
-  }, [status, history]);
-
   const submitLoginForm = async (e) => {
     e.preventDefault();
-
-    await requestHandler(getUser, {
-      email: enteredEmail,
-      password: enteredPassword,
-    });
+    dispatch(
+      loginThunk({
+        email: enteredEmail,
+        password: enteredPassword,
+      })
+    );
   };
 
-  if (status === "PENDING") return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
+
   const emailInputStyle = `${classes["login__input"]} ${
     emailHasError && classes.inValid
   }`;
   const passwordInputStyle = `${classes["login__input"]} ${
     passwordHasError && classes.inValid
   }`;
-  console.log("login is valid? ", emailHasError);
   return (
     <div className={classes["login"]}>
       <form className={classes["login-form"]} onSubmit={submitLoginForm}>
@@ -115,7 +111,7 @@ const LoginForm = (props) => {
       {modal && (
         <Modal
           onClose={
-            modal.callback &&
+            modal.callback ||
             (() => {
               setModal(null);
             })

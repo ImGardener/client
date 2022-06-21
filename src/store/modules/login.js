@@ -1,9 +1,23 @@
-const LOGIN = "LOGIN";
-const LOGOUT = "LOGOUT";
+import { getUser } from "../../utils/user-apis";
+
+const LOGIN = "auth/login";
+const LOGOUT = "auth/logout";
+const LOGIN_REQUEST = "auth/login_request";
+const GET_AUTH_ERROR = "auth/get_auth_error";
+
 const initialLoginState = {
   isLogin: false,
   token: null,
+  loading: false,
+  error: null,
 };
+
+export const loginRequest = () => {
+  return {
+    type: LOGIN_REQUEST,
+  };
+};
+
 export const login = (token) => {
   return {
     type: LOGIN,
@@ -16,16 +30,32 @@ export const logout = (token) => {
     value: null,
   };
 };
+export const getAuthError = (error) => {
+  return {
+    type: GET_AUTH_ERROR,
+    value: error || "request is failed",
+  };
+};
 
 const loginReducer = (state = initialLoginState, action) => {
+  console.log(action);
   switch (action.type) {
+    case LOGIN_REQUEST: {
+      return { ...initialLoginState, loading: true };
+    }
     case LOGIN: {
-      return { ...state, isLogin: true, token: action.value };
+      return { ...state, isLogin: true, loading: false, token: action.value };
     }
     case LOGOUT: {
       localStorage.removeItem("expired_date");
       localStorage.removeItem("login_token");
       return { ...state, isLogin: false, token: null };
+    }
+
+    case GET_AUTH_ERROR: {
+      localStorage.removeItem("expired_date");
+      localStorage.removeItem("login_token");
+      return { ...state, isLogin: false, loading: false, error: action.value };
     }
     default:
       return state;
@@ -34,36 +64,47 @@ const loginReducer = (state = initialLoginState, action) => {
 
 export default loginReducer;
 
-export const autoLoginThunk = () => {
-  return (dispatch, state) => {
-    console.log("go..");
-    const expiredDate = localStorage.getItem("expired_date");
-    const loginToken = localStorage.getItem("login_token");
+// login
+export const loginThunk = ({ email, password }) => {
+  return async (dispatch, state) => {
+    // 유효하지 않으므로 로그인 불가능.
+    if (!email || !password) return;
+    try {
+      dispatch(loginRequest());
+      const { token, expiresIn } = await getUser({ email, password });
 
-    // 토큰이 유효하지 않으므로 로그인 불가능.
-    if (!loginToken || !expiredDate) return;
+      // 토큰 유효시간 계산
+      const expiredDate = calcTokenExpiredDate(expiresIn);
 
-    const isValid = checkToeknIsValid(expiredDate);
+      // local token 저장
+      localStorage.setItem("expired_date", expiredDate);
+      localStorage.setItem("login_token", token);
 
-    // local token으로 로그인
-    if (isValid) dispatch(login(loginToken));
+      dispatch(login(token));
+    } catch (error) {
+      console.log(error);
+      dispatch(getAuthError(error?.message));
+    }
   };
 };
-
-// login
-export const loginThunk = ({ token, expiresIn }) => {
+export const autoLoginThunk = () => {
   return (dispatch, state) => {
-    // 토큰이 유효하지 않으므로 로그인 불가능.
-    if (!token || !expiresIn) return;
+    try {
+      const expiredDate = localStorage.getItem("expired_date");
+      const loginToken = localStorage.getItem("login_token");
 
-    // 토큰 유효시간 계산
-    const expiredDate = calcTokenExpiredDate(expiresIn);
+      // 토큰이 유효하지 않으면 로그인 불가능.
+      if (!loginToken || !expiredDate) return;
 
-    // local token 저장
-    localStorage.setItem("expired_date", expiredDate);
-    localStorage.setItem("login_token", token);
+      const isValid = checkToeknIsValid(expiredDate);
 
-    dispatch(login(token));
+      // local token으로 로그인
+      if (isValid) dispatch(login(loginToken));
+    } catch (error) {
+      // 오류발생 시 local token 삭제
+      localStorage.removeItem("expired_date");
+      localStorage.removeItem("login_token");
+    }
   };
 };
 

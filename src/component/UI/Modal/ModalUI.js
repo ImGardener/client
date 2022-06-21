@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../Button/Button";
 const ModalUI = (props) => {
   const icon = props.type === "ERROR" ? faExclamationTriangle : faCircleCheck;
-  console.log(props);
 
   return (
     <div className={classes["modal-ui"]}>

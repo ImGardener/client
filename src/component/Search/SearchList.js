@@ -4,25 +4,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-const SearchList = (props) => {
-  const status = useSelector((state) => state.status.status);
-  const message = useSelector((state) => state.status.message);
-  if (status === "PENDING") {
+const SearchList = () => {
+  const error = useSelector((state) => state.search.error);
+  const loading = useSelector((state) => state.search.loading);
+  const plants = useSelector((state) => state.search.plants);
+
+  if (loading) {
     return <LoadingSpinner />;
   }
-  console.log(message);
-  if (status === "ERROR") {
+  if (error) {
     return (
       <div className={classes["search-list--empty"]}>
         <FontAwesomeIcon
           className={classes["search-list__icon--empty"]}
           icon={faWarning}
         />
-        <p>{String(message)} </p>
+        <p>{String(error)} </p>
       </div>
     );
   }
-  if (!props.plants || props.plants.length === 0)
+
+  if (!plants || plants.length === 0)
     return (
       <div className={classes["search-list--empty"]}>
         <FontAwesomeIcon
@@ -33,7 +35,7 @@ const SearchList = (props) => {
       </div>
     );
 
-  const plantItems = props.plants.map((plant) => (
+  const plantItems = plants.map((plant) => (
     <SearchItem
       key={plant.id}
       name={plant.name}
