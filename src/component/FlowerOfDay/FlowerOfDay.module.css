@@ -1,7 +1,7 @@
 .flower-of-day {
   display: flex;
   align-items: center;
-  margin-top: var(--base-blank-large);
+  margin-top: var(--base-blank-medium);
   padding: var(--base-blank-large) 0;
   border-top: 5px solid var(--color-main-light-green);
   gap: var(--base-blank-small);

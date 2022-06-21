@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./SideBar.module.css";
 import {
   faSpa,
@@ -6,15 +6,40 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SearchInput from "../Input/SearchInput";
 import { Link } from "react-router-dom";
+import Input from "../Input/Input";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SideMnu = () => {
+  const history = useHistory();
+  const [searchWord, setSearchWord] = useState(null);
+
+  const submitsearchFromHandler = (e) => {
+    e.preventDefault();
+    history.push("/search", { searchWord: searchWord });
+  };
+  const changeSearchInputHandler = (e) => {
+    setSearchWord(e.target.value);
+  };
   return (
     <div className={classes.sidenav}>
       <section id="search" alt="" className={classes["search"]}>
-        <form method="post" action="#" className={classes["search__form"]}>
-          <SearchInput className={classes["search__input"]} />
+        <form
+          method="post"
+          action="#"
+          className={classes["search__form"]}
+          onSubmit={submitsearchFromHandler}
+        >
+          <Input
+            input={{
+              type: "text",
+              name: "search",
+              placeholder: "검색하기",
+            }}
+            onChange={changeSearchInputHandler}
+            inputClassName={classes["search__input"]}
+            icon={faSearch}
+          />
         </form>
       </section>
       <ul className={classes["side-menu"]}>

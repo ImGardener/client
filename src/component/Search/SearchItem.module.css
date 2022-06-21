@@ -65,12 +65,10 @@
 @media screen and (max-width: 1200px) {
   .posts {
     width: 350px;
-    border: 2px solid red;
   }
 }
 @media screen and (max-width: 480px) {
   .posts {
     width: 300px;
-    border: 2px solid red;
   }
 }

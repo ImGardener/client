@@ -1,12 +1,12 @@
 .sidenav {
   width: 12rem;
   /* minus header height */
-  height: calc(100% - 80px);
+  height: calc(100%);
   margin: 0;
   padding: 0;
   position: absolute;
   overflow: auto;
-  background-color: rgba(60, 158, 83, 0.8);
+  background-color: var(--color-main-green);
 }
 .search {
   padding: 1rem;
@@ -15,16 +15,11 @@
 .search__form {
   width: 100%;
   border: none;
-  background-color: white;
   position: relative;
   border-radius: 10px;
 }
-.search__icon {
-  width: 10%;
-}
 .search__input {
-  width: 90%;
-  padding: 10px;
+  width: 100%;
   border: none;
 }
 

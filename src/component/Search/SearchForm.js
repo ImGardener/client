@@ -13,6 +13,7 @@ import useHttp from "../../hoc/use-https";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeStatus } from "../../store/modules/status";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const SearchForm = (props) => {
   const { requestHandler, error, status } = useHttp();
@@ -22,7 +23,7 @@ const SearchForm = (props) => {
   const [category, setCategory] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const dispatch = useDispatch();
-
+  const location = useLocation();
   useEffect(() => {
     Promise.all([
       requestHandler(getInsttList),
@@ -32,6 +33,12 @@ const SearchForm = (props) => {
       setCategoryList(reponse2);
     });
   }, [requestHandler]);
+
+  useEffect(() => {
+    if (location.state?.searchWord) {
+      searchPlants(location.state?.searchWord);
+    }
+  }, [location.state]);
 
   const insttChangeHandler = (event) => {
     setInstt(event.target.value);
@@ -46,12 +53,16 @@ const SearchForm = (props) => {
   const submitSearchFormHandler = async (e) => {
     e.preventDefault();
     if (searchWord.trim() === "") return alert("검색어를 입력하세요!");
+
+    await searchPlants(searchWord);
+  };
+  const searchPlants = async (word) => {
     dispatch(changeStatus("PENDING"));
 
     const config = {
       insttName: instt,
       category,
-      svcCodeNm: searchWord,
+      svcCodeNm: word,
     };
 
     const result = await requestHandler(getVarietyList, config);
@@ -67,12 +78,6 @@ const SearchForm = (props) => {
         className={classes["search__form"]}
         onSubmit={submitSearchFormHandler}
       >
-        {/* <SearchInput
-          className={classes["search__search"]}
-          placeholder="품종명을 입력해주세요"
-          onChange={searchWordChangeHandler}
-        /> */}
-
         <Input
           input={{
             type: "text",
