@@ -8,7 +8,7 @@ import useInput from "../../hoc/use-input";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
-import { loginThunk } from "../../store/modules/login";
+import { loginThunk } from "../../store/modules/auth";
 const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const LoginForm = () => {
   }, [error]);
   useEffect(() => {
     if (isLogin) {
-      history.push("/");
+      history.replace("/");
     }
   }, [isLogin, history]);
 

@@ -1,11 +1,8 @@
 import { parseXmlToJson } from "./xmlparser";
 import { DATAGO_KEY } from "./key-store";
 export const getTodayFlower = async (today) => {
-  console.log(today);
   try {
-    let url = `/NihhsTodayFlowerInfo01/selectTodayFlower01?serviceKey=${DATAGO_KEY}&Month=${today.month}&Day${today.day}`;
-    console.log(url);
-
+    let url = `/NihhsTodayFlowerInfo01/selectTodayFlower01?serviceKey=${DATAGO_KEY}`;
     const response = await fetch(url, {
       method: "GET",
     });

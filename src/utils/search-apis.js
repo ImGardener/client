@@ -101,8 +101,9 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
         preVarieties[variety.prdlstCtgCode] = {
           description: variety.mainChartrInfo,
           name: variety.svcCodeNm,
-          id: variety.prdlstCtgCode,
+          plantId: variety.prdlstCtgCode,
           instt: variety.unbrngInsttInfo,
+          imgLink: variety.imgFileLink,
         };
       }
     });

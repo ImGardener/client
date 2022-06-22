@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { logout } from "../../../store/modules/login";
+import { logout } from "../../../store/modules/auth";
 import Button from "../Button/Button";
 import classes from "./Header.module.css";
 

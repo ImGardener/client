@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import classes from "./SideBar.module.css";
-import {
-  faSpa,
-  faBorderAll,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpa, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
@@ -45,22 +41,16 @@ const SideMnu = () => {
       <ul className={classes["side-menu"]}>
         <li className={classes["side-menu__item"]}>
           <Link to={"/search"} className={classes["item__title"]}>
-            <FontAwesomeIcon icon={faSpa} />
+            <FontAwesomeIcon icon={faSearch} />
             검색하기
           </Link>
         </li>
 
         <li className={classes["side-menu__item"]}>
-          <FontAwesomeIcon icon={faSpa} />
-          <a className={classes["item__title"]} href="elements.html">
+          <Link to={"/myPlants"} className={classes["item__title"]}>
+            <FontAwesomeIcon icon={faSpa} />
             My Plants
-          </a>
-        </li>
-        <li className={classes["side-menu__item"]}>
-          <FontAwesomeIcon icon={faBorderAll} />
-          <a className={classes["item__title"]} href="elements.html">
-            Other
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

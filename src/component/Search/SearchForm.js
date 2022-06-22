@@ -7,8 +7,10 @@ import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getCategoryList, getInsttList } from "../../utils/search-apis";
-import { searchThunk } from "../../store/modules/search";
-
+import {
+  searchThunk,
+  searchThunkWithBookmark,
+} from "../../store/modules/plants";
 const SearchForm = () => {
   const [insttList, setInsttList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -17,7 +19,6 @@ const SearchForm = () => {
   const [searchWord, setSearchWord] = useState("");
   const dispatch = useDispatch();
   const location = useLocation();
-
   useEffect(() => {
     Promise.all([getInsttList(), getCategoryList()])
       .then(([reponse1, reponse2]) => {
@@ -58,7 +59,12 @@ const SearchForm = () => {
       category,
       svcCodeNm: word,
     };
-    dispatch(searchThunk(config));
+    const token = localStorage.getItem("login_token");
+    if (token) {
+      dispatch(searchThunkWithBookmark(config, token));
+    } else {
+      dispatch(searchThunk(config));
+    }
   };
 
   return (

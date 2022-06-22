@@ -26,9 +26,10 @@
 .side-menu__item {
   font-size: 1rem;
   color: white;
-  padding: 1.5rem 1rem;
   font-weight: 800;
   border-bottom: 1px solid white;
+  margin: 0;
+  list-style: none;
 }
 
 .side-menu__item:hover {
@@ -38,9 +39,14 @@
   text-decoration: none;
   color: white;
 }
+.side-menu__item svg {
+  padding-right: var(--base-blank-xsmall);
+}
 
 .item__title {
-  padding-left: 0.81rem;
+  display: inline-block;
+  width: 100%;
+  padding: 1.5rem 1rem;
 }
 
 @media screen and (max-width: 760px) {
