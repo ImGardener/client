@@ -1,12 +1,13 @@
 import { Fragment, useState } from "react";
 
 import classes from "./Carousel.module.css";
-import plant from "../../assets/sample_plants.jpg";
+import carousel1 from "../../assets/carousel1.jpg";
+import carousel2 from "../../assets/carousel2.jpg";
 
 import Sliders from "./Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
-const TOTAL_SLIDER = 3;
+const TOTAL_SLIDER = 2;
 const Carousel = () => {
   const [currentSlider, setCurrentSlider] = useState(0);
 
@@ -25,7 +26,7 @@ const Carousel = () => {
     }
   };
 
-  const imgs = [plant, plant, plant];
+  const imgs = [carousel1, carousel2];
   return (
     <Fragment>
       <div className={classes["carousel"]}>
