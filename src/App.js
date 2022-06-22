@@ -19,8 +19,8 @@ function App() {
   }, [dispatch]);
   return (
     <div className="App">
-      <ErrorBoundary>
-        <Layout>
+      <Layout>
+        <ErrorBoundary>
           <Switch>
             <Route path="/" exact>
               <Main />
@@ -38,8 +38,8 @@ function App() {
               <MyPlantList />
             </Route>
           </Switch>
-        </Layout>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </Layout>
     </div>
   );
 }
