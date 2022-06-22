@@ -1,4 +1,4 @@
-import { DATABASE_URL, FIREBASE_KEY } from "./key-store";
+import { FIREBASE_KEY } from "./key-store";
 
 export const addUser = async (info) => {
   try {
@@ -55,39 +55,14 @@ export const getUser = async (info) => {
     throw error;
   }
 };
-export const getBookmarkList = async ({ userId }) => {
+
+export const getUserInfoById = async (id) => {
   try {
-    let url = `${DATABASE_URL}/bookmark/${userId}.json`;
-    let response = await fetch(url, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      let errorMessage = "request is failed!";
-      let responseJson = await response.json();
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
-
-    let responseJson = await response.json();
-    let result = [];
-    for (let plantIds of Object.values(responseJson)) {
-      result.push(...plantIds.plants);
-    }
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const updateBookmark = async ({ userId }) => {
-  try {
-    let url = `${DATABASE_URL}/bookmark/${userId}.json`;
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_KEY}`;
     let response = await fetch(url, {
       method: "POST",
       body: JSON.stringify({
-        plants: ["test1", "test2"],
+        idToken: id,
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -95,13 +70,14 @@ export const updateBookmark = async ({ userId }) => {
     if (!response.ok) {
       let errorMessage = "request is failed!";
       let responseJson = await response.json();
+
       if (responseJson && responseJson.error?.message)
         errorMessage = responseJson?.error.message;
       throw new Error(errorMessage);
     }
-
     let responseJson = await response.json();
-    console.log("result : ", responseJson);
+
+    return { userId: responseJson.users[0].localId };
   } catch (error) {
     throw error;
   }

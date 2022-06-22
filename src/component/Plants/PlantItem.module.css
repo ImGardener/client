@@ -13,6 +13,7 @@
 }
 .plant .plant__info {
   padding: 1rem;
+  position: relative;
 }
 .plant .plant__info > p {
   text-overflow: ellipsis;
@@ -47,7 +48,19 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
+.bookmark__btn {
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 2rem;
+  right: var(--base-blank-xsmall);
+  cursor: pointer;
+  color: var(--color-light-grey);
+  font-size: var(--font-small);
+}
+.active {
+  color: red;
+}
 @media screen and (min-width: 481px) and (max-width: 1680px) {
 }
 @media screen and (max-width: 1200px) {
