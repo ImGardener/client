@@ -2,6 +2,7 @@ import classes from "./FlowerOfDay.module.css";
 import { useEffect } from "react";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
+import { DATAGO_KEY } from "../../utils/key-store";
 
 const FlowerOfDay = (props) => {
   const [flowerInfo, setFlowerInfo] = useState({
@@ -10,21 +11,13 @@ const FlowerOfDay = (props) => {
   });
 
   useEffect(() => {
-    const today = new Date();
-    const getFlowerOfDay = async () => {
-      try {
-        const day = {
-          month: today.getMonth() + 1,
-          day: today.getDate(),
-        };
-        const result = await getTodayFlower(day);
-        setFlowerInfo(result);
-      } catch (error) {}
-    };
-
     getFlowerOfDay();
   }, []);
 
+  const getFlowerOfDay = async () => {
+    const result = await getTodayFlower();
+    setFlowerInfo(result);
+  };
   return (
     <div className={classes["flower-of-day"]}>
       <div className={classes["flower"]}>
