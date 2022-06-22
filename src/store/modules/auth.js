@@ -82,7 +82,6 @@ export const loginThunk = ({ email, password }) => {
 
       dispatch(login(token));
     } catch (error) {
-      console.log(error);
       dispatch(getAuthError(error?.message));
     }
   };

@@ -32,8 +32,8 @@ const PlantList = (props) => {
       name={plant.name}
       description={plant.description}
       instt={plant.instt}
-      bookmark={plant?.bookmarkId}
-      imgLink={plant?.imgLink}
+      bookmarkId={plant?.bookmarkId}
+      imgLink={plant.imgLink}
     />
   ));
   return <ul className={classes["plant-list"]}>{plantItems}</ul>;

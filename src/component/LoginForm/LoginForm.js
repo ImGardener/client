@@ -18,7 +18,10 @@ const LoginForm = () => {
   const error = useSelector((state) => state.login.error);
   const isLogin = useSelector((state) => state.login.isLogin);
 
-  const changeJoinFormHandler = () => {};
+  const changeJoinFormHandler = () => {
+    history.push("/join");
+  };
+
   useEffect(() => {
     if (error) {
       setModal({

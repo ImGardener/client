@@ -1,9 +1,10 @@
 import { getVarietyList } from "../../utils/search-apis";
 import { getBookmarkList } from "../../utils/bookmark-apis";
 
-const GET_PLANTS_REQUEST = "search/get_plants_request";
-const GET_PLANTS = "search/get_plants";
-const GET_PLANTS_ERROR = "search/get_plants_error";
+const GET_PLANTS_REQUEST = "plants/get_plants_request";
+const GET_PLANTS = "plants/get_plants";
+const GET_PLANTS_ERROR = "plants/get_plants_error";
+const RESET_PLANTS = "plants/reset_plants";
 
 const initialSearchState = {
   plants: [],
@@ -29,6 +30,12 @@ export const getPlantError = (error) => {
   };
 };
 
+export const resetPlants = () => {
+  return {
+    type: RESET_PLANTS,
+  };
+};
+
 const searchReducer = (state = initialSearchState, action) => {
   switch (action.type) {
     case GET_PLANTS_REQUEST: {
@@ -39,6 +46,9 @@ const searchReducer = (state = initialSearchState, action) => {
     }
     case GET_PLANTS_ERROR: {
       return { ...state, plants: null, loading: false, error: action.value };
+    }
+    case RESET_PLANTS: {
+      return initialSearchState;
     }
     default:
       return state;
@@ -80,9 +90,9 @@ export const searchThunkWithBookmark = (requestConfig, token) => {
 };
 
 function checkBookmarkOfPlant(bookmarkList, plants) {
-  plants = plants.forEach((plant) => {
+  plants.forEach((plant) => {
     let findIdx = bookmarkList.findIndex((bookmark) => {
-      return plant.id === bookmark.plantId;
+      return plant.plantId === bookmark.plantId;
     });
     if (findIdx !== -1) {
       plant.bookmarkId = bookmarkList[findIdx].bookmarkId;

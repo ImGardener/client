@@ -19,7 +19,6 @@ const MyPlantList = () => {
       let token = localStorage.getItem("login_token");
 
       let bookmarkList = await getBookmarkList(token);
-      console.log(bookmarkList);
       setBookmarks(bookmarkList);
     } catch (error) {
       if (error.message === "MISSING_ID_TOKEN")

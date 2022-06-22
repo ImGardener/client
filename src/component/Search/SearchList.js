@@ -37,11 +37,11 @@ const SearchList = () => {
   const plantItems = plants.map((plant) => (
     <PlantItem
       key={plant.plantId}
-      id={plant.plantId}
+      plantId={plant.plantId}
       name={plant.name}
       description={plant.description}
       instt={plant.instt}
-      bookmark={plant?.bookmark}
+      bookmarkId={plant?.bookmarkId}
       imgLink={plant.imgLink}
     />
   ));

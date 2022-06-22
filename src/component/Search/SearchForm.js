@@ -8,15 +8,19 @@ import Input from "../UI/Input/Input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getCategoryList, getInsttList } from "../../utils/search-apis";
 import {
+  resetPlants,
   searchThunk,
   searchThunkWithBookmark,
 } from "../../store/modules/plants";
+import Modal from "../UI/Modal/Modal";
 const SearchForm = () => {
+  const [modal, setModal] = useState(null);
   const [insttList, setInsttList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [instt, setInstt] = useState("");
   const [category, setCategory] = useState("");
   const [searchWord, setSearchWord] = useState("");
+
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
@@ -35,6 +39,7 @@ const SearchForm = () => {
     if (location.state?.searchWord) {
       searchPlants(location.state?.searchWord);
     }
+    return () => dispatch(resetPlants());
   }, [location.state]);
 
   const insttChangeHandler = (event) => {
@@ -49,7 +54,15 @@ const SearchForm = () => {
   };
   const submitSearchFormHandler = async (e) => {
     e.preventDefault();
-    if (searchWord.trim() === "") return alert("검색어를 입력하세요!");
+    if (searchWord.trim() === "") {
+      return setModal({
+        message: "검색어를 입력하세요.",
+        type: "ERROR",
+        callback: () => {
+          setModal(false);
+        },
+      });
+    }
 
     await searchPlants(searchWord);
   };
@@ -61,6 +74,7 @@ const SearchForm = () => {
     };
     const token = localStorage.getItem("login_token");
     if (token) {
+      // dispatch(searchThunkWithBookmark(config, token));
       dispatch(searchThunkWithBookmark(config, token));
     } else {
       dispatch(searchThunk(config));
@@ -68,37 +82,40 @@ const SearchForm = () => {
   };
 
   return (
-    <div className={classes["search-form__container"]}>
-      <form
-        className={classes["search__form"]}
-        onSubmit={submitSearchFormHandler}
-      >
-        <Input
-          input={{
-            type: "text",
-            name: "search",
-            placeholder: "품종명",
-          }}
-          onChange={searchWordChangeHandler}
-          inputClassName={classes["search__search"]}
-          icon={faSearch}
-        />
+    <>
+      <div className={classes["search-form__container"]}>
+        <form
+          className={classes["search__form"]}
+          onSubmit={submitSearchFormHandler}
+        >
+          <Input
+            input={{
+              type: "text",
+              name: "search",
+              placeholder: "품종명",
+            }}
+            onChange={searchWordChangeHandler}
+            inputClassName={classes["search__search"]}
+            icon={faSearch}
+          />
 
-        <SelectBox
-          className={classes["filter"]}
-          options={insttList}
-          onChange={insttChangeHandler}
-          placeholder="기관"
-        />
-        <SelectBox
-          className={classes["filter"]}
-          options={categoryList}
-          onChange={categoryChangeHandler}
-          placeholder="카테고리"
-        />
-        <Button className={classes["search__controls"]}>Search</Button>
-      </form>
-    </div>
+          <SelectBox
+            className={classes["filter"]}
+            options={insttList}
+            onChange={insttChangeHandler}
+            placeholder="기관"
+          />
+          <SelectBox
+            className={classes["filter"]}
+            options={categoryList}
+            onChange={categoryChangeHandler}
+            placeholder="카테고리"
+          />
+          <Button className={classes["search__controls"]}>Search</Button>
+        </form>
+      </div>
+      {modal && <Modal {...modal} onClose={modal.callback} />}
+    </>
   );
 };
 export default SearchForm;
