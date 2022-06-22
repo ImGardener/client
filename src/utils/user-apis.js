@@ -1,4 +1,4 @@
-import { FIREBASE_KEY } from "./key-store";
+const FIREBASE_KEY = process.env.REACT_APP_FIREBASE_KEY;
 
 export const addUser = async (info) => {
   try {
@@ -16,7 +16,6 @@ export const addUser = async (info) => {
     if (!response.ok) {
       let errorMessage = "authentication is failed!";
       let responseJson = await response.json();
-      console.log(responseJson);
 
       if (responseJson && responseJson.error?.message)
         errorMessage = responseJson?.error.message;
@@ -42,7 +41,6 @@ export const getUser = async (info) => {
     if (!response.ok) {
       let errorMessage = "authentication is failed!";
       let responseJson = await response.json();
-      console.log(responseJson);
 
       if (responseJson && responseJson.error?.message)
         errorMessage = responseJson?.error.message;

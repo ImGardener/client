@@ -1,5 +1,6 @@
 import { parseXmlToJson } from "./xmlparser";
-import { DATAGO_KEY } from "./key-store";
+const DATAGO_KEY = process.env.REACT_APP_DATAGO_KEY;
+
 export const getTodayFlower = async (today) => {
   try {
     let url = `/NihhsTodayFlowerInfo01/selectTodayFlower01?serviceKey=${DATAGO_KEY}`;

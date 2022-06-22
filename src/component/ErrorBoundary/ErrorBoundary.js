@@ -8,21 +8,15 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    console.log("error report", error);
-
-    // 다음 렌더링에서 폴백 UI가 보이도록 상태를 업데이트 합니다.
+    // 다음 렌더링에서 폴백 UI가 보이도록 상태를 업데이트
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log("error report", error);
     this.setState({ hasError: true });
-    // 에러 리포팅 서비스에 에러를 기록할 수도 있습니다.
-    // logErrorToMyService(error, errorInfo);
   }
 
   render() {
-    console.log("render check", this.state.hasError);
     if (this.state.hasError) {
       return (
         <Modal

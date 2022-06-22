@@ -31,7 +31,7 @@ const SearchList = () => {
           className={classes["search-list__icon--empty"]}
           icon={faBan}
         />
-        <p>결과가 없습니다.</p>
+        <p>검색 결과가 없습니다.</p>
       </div>
     );
   const plantItems = plants.map((plant) => (

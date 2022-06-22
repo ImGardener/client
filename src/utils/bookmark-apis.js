@@ -1,8 +1,7 @@
-import { DATABASE_URL, FIREBASE_KEY } from "./key-store";
 import { getUserInfoById } from "./user-apis";
+const DATABASE_URL = process.env.REACT_APP_DATABASE_URL;
 export const getBookmarkList = async (token) => {
   try {
-    console.log("token", token);
     const { userId } = await getUserInfoById(token);
 
     let url = `${DATABASE_URL}/bookmark/${userId}.json?auth=${token}`;
@@ -21,7 +20,6 @@ export const getBookmarkList = async (token) => {
 
     if (!responseJson) return [];
     let result = [];
-    console.log(responseJson);
 
     for (let plantId of Object.keys(responseJson)) {
       result.push({
@@ -80,7 +78,6 @@ export const removeBookmark = async ({ token, bookmarkId, plantId }) => {
     }
 
     let responseJson = await response.json();
-    console.log("result : ", responseJson);
   } catch (error) {
     throw error;
   }

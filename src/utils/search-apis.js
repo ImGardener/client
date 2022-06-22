@@ -1,5 +1,6 @@
 import { parseXmlToJson } from "./xmlparser";
-import { NONGSARO_KEY } from "./key-store";
+const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
+
 export const getInsttList = async () => {
   try {
     let url = "/service/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
@@ -34,7 +35,6 @@ export const getInsttList = async () => {
 
 export const getCategoryList = async () => {
   try {
-    console.log("call?");
     let url = "/service/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
