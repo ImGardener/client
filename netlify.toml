@@ -1,0 +1,14 @@
+[[redirects]]
+  from = "/NihhsTodayFlowerInfo01"
+  to = "http://apis.data.go.kr/1390804"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
+
+  
+  [[redirects]]
+  from = "/service"
+  to =  "http://api.nongsaro.go.kr"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
