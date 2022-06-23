@@ -7,7 +7,7 @@ import classes from "./Header.module.css";
 
 const Header = () => {
   const history = useHistory();
-  const isLogin = useSelector((state) => state.login.isLogin);
+  const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
 
   const linkToLoginHandler = () => {

@@ -8,15 +8,15 @@ import useInput from "../../hoc/use-input";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
-import { loginThunk } from "../../store/modules/auth";
+import { loginThunk, resetError } from "../../store/modules/auth";
 const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [modal, setModal] = useState(null);
-  const isLoading = useSelector((state) => state.login.loading);
-  const error = useSelector((state) => state.login.error);
-  const isLogin = useSelector((state) => state.login.isLogin);
+  const isLoading = useSelector((state) => state.auth.loading);
+  const error = useSelector((state) => state.auth.error);
+  const isLogin = useSelector((state) => state.auth.isLogin);
 
   const changeJoinFormHandler = () => {
     history.push("/join");
@@ -29,7 +29,11 @@ const LoginForm = () => {
         message: error,
       });
     }
-  }, [error]);
+    return () => {
+      dispatch(resetError());
+    };
+  }, [error, dispatch]);
+
   useEffect(() => {
     if (isLogin) {
       history.replace("/");

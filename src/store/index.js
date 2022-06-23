@@ -1,10 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import loginReducer from "./modules/auth";
+import authReducer from "./modules/auth";
 import thunkMiddleware from "redux-thunk";
 import searchReducer from "./modules/plants";
 
 const rootReducer = combineReducers({
-  login: loginReducer,
+  auth: authReducer,
   plants: searchReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { addBookmark, removeBookmark } from "../../utils/bookmark-apis";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../UI/Modal/Modal";
 const PlantItem = (props) => {
   const [bookmark, setBookmark] = useState(props.bookmarkId);
@@ -12,7 +12,12 @@ const PlantItem = (props) => {
   const bookmarkStyle = `${classes["bookmark__btn"]} ${
     bookmark && classes["active"]
   }`;
-  const token = useSelector((state) => state.login.token);
+  const token = useSelector((state) => state.auth.token);
+  useEffect(() => {
+    if (!token) {
+      setBookmark(null);
+    }
+  }, [token]);
   const changeBookmarkHandler = async () => {
     if (!token) {
       return setModal({

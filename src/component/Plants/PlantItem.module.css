@@ -10,6 +10,7 @@
   width: 100%;
   border-top-left-radius: var(--size-border-radius-medium);
   border-top-right-radius: var(--size-border-radius-medium);
+  height: 200px;
 }
 .plant .plant__info {
   padding: 1rem;

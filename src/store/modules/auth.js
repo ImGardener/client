@@ -1,9 +1,10 @@
 import { getUser } from "../../utils/user-apis";
 
-const LOGIN = "auth/login";
-const LOGOUT = "auth/logout";
+const LOGIN_SUCCESS = "auth/login";
+const LOGOUT_SUCCESS = "auth/logout";
 const LOGIN_REQUEST = "auth/login_request";
-const GET_AUTH_ERROR = "auth/get_auth_error";
+const AUTH_ERROR = "auth/get_auth_error";
+const ERROR_RESET = "auth/reset_error";
 
 const initialLoginState = {
   isLogin: false,
@@ -18,51 +19,57 @@ export const loginRequest = () => {
   };
 };
 
-export const login = (token) => {
+export const loginSuccess = (token) => {
   return {
-    type: LOGIN,
+    type: LOGIN_SUCCESS,
     value: token,
   };
 };
 export const logout = (token) => {
   return {
-    type: LOGOUT,
+    type: LOGOUT_SUCCESS,
     value: null,
   };
 };
-export const getAuthError = (error) => {
+export const authError = (error) => {
   return {
-    type: GET_AUTH_ERROR,
+    type: AUTH_ERROR,
     value: error || "request is failed",
   };
 };
+export const resetError = () => {
+  return {
+    type: ERROR_RESET,
+  };
+};
 
-const loginReducer = (state = initialLoginState, action) => {
+const authReducer = (state = initialLoginState, action) => {
   console.log(action);
   switch (action.type) {
     case LOGIN_REQUEST: {
       return { ...initialLoginState, loading: true };
     }
-    case LOGIN: {
+    case LOGIN_SUCCESS: {
       return { ...state, isLogin: true, loading: false, token: action.value };
     }
-    case LOGOUT: {
+    case LOGOUT_SUCCESS: {
       localStorage.removeItem("expired_date");
       localStorage.removeItem("login_token");
       return { ...state, isLogin: false, token: null };
     }
 
-    case GET_AUTH_ERROR: {
+    case AUTH_ERROR: {
       localStorage.removeItem("expired_date");
       localStorage.removeItem("login_token");
       return { ...state, isLogin: false, loading: false, error: action.value };
+    }
+    case ERROR_RESET: {
+      return { ...state, error: null };
     }
     default:
       return state;
   }
 };
-
-export default loginReducer;
 
 // login
 export const loginThunk = ({ email, password }) => {
@@ -80,9 +87,9 @@ export const loginThunk = ({ email, password }) => {
       localStorage.setItem("expired_date", expiredDate);
       localStorage.setItem("login_token", token);
 
-      dispatch(login(token));
+      dispatch(loginSuccess(token));
     } catch (error) {
-      dispatch(getAuthError(error?.message));
+      dispatch(authError(error?.message));
     }
   };
 };
@@ -98,7 +105,7 @@ export const autoLoginThunk = () => {
       const isValid = checkToeknIsValid(expiredDate);
 
       // local token으로 로그인
-      if (isValid) dispatch(login(loginToken));
+      if (isValid) dispatch(loginSuccess(loginToken));
     } catch (error) {
       // 오류발생 시 local token 삭제
       localStorage.removeItem("expired_date");
@@ -126,3 +133,4 @@ const calcTokenExpiredDate = (expirationIn) => {
   const expiredTime = new Date(new Date().getTime() + expirationIn * 1000);
   return expiredTime;
 };
+export default authReducer;
