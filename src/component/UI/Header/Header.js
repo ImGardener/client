@@ -19,7 +19,7 @@ const Header = () => {
   return (
     <header className={classes.header}>
       <Link to={"/"} className={classes["header__logo"]}>
-        ImGardener?
+        ImGardener
       </Link>
       {/* <p className={classes["header__logo"]}>ImGardener </p> */}
       {!isLogin ? (

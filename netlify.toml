@@ -2,11 +2,9 @@
   from = "/NihhsTodayFlowerInfo01"
   to = "http://apis.data.go.kr/1390804/:splat"
   status = 200
-  force = true
 
   
   [[redirects]]
   from = "/service"
   to =  "http://api.nongsaro.go.kr/:splat"
   status = 200
-  force = true
