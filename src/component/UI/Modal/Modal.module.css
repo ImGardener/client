@@ -10,23 +10,29 @@
 .modal-ui {
   position: absolute;
   width: 50%;
+  max-width: 560px;
   height: 25vh;
   min-height: 300px;
   background-color: white;
   margin: auto;
-  /* top: 20px; */
-  transform: translate(50%, 50%);
+  top: 40%;
+  left: 50%;
+
+  transform: translate(-50%, -70%);
+
   border-radius: var(--size-border-radius-large);
   text-align: center;
   padding: var(--base-blank-small);
   z-index: 4;
 }
 .modal-ui__content {
-  padding-top: 10%;
   font-size: var(--font-regular);
   height: 80%;
   position: relative;
-  /* top: 10%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .modal-ui__content .icon {
   font-size: var(--font-large);
