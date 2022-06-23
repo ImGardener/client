@@ -3,7 +3,7 @@ const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
 
 export const getInsttList = async () => {
   try {
-    let url = "/service/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
+    let url = "/proxyb/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -35,7 +35,7 @@ export const getInsttList = async () => {
 
 export const getCategoryList = async () => {
   try {
-    let url = "/service/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
+    let url = "/proxyb/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -71,7 +71,7 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
     let url =
-      "/service/varietyInfo/varietyList?apiKey=" +
+      "/proxyb/varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
       "&svcCodeNm=" +
       svcCodeNm +
