@@ -3,7 +3,7 @@ const DATAGO_KEY = process.env.REACT_APP_DATAGO_KEY;
 
 export const getTodayFlower = async (today) => {
   try {
-    let url = `/NihhsTodayFlowerInfo01/selectTodayFlower01?serviceKey=${DATAGO_KEY}`;
+    let url = `/proxya/selectTodayFlower01?serviceKey=${DATAGO_KEY}`;
     const response = await fetch(url, {
       method: "GET",
     });
