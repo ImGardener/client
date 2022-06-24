@@ -43,6 +43,10 @@
 - React
 - firebase Realtime Database
 
+# 결함
+
+- 환경변수를 ignore 처리하더라도 url에 포함되어 노출되고 있음
+
 ## Todo
 
 1. 식물 관리 기능 추가
