@@ -44,7 +44,6 @@ export const resetError = () => {
 };
 
 const authReducer = (state = initialLoginState, action) => {
-  console.log(action);
   switch (action.type) {
     case LOGIN_REQUEST: {
       return { ...initialLoginState, loading: true };

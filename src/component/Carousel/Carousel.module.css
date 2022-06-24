@@ -43,4 +43,8 @@
   .carousel {
     width: 80%;
   }
+  .slider__btn--left,
+  .slider__btn--right {
+    font-size: var(--font-small);
+  }
 }
