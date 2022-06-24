@@ -5,6 +5,7 @@ import { getBookmarkList } from "../../utils/bookmark-apis";
 import Modal from "../UI/Modal/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector } from "react-redux";
+import { getAuth } from "firebase/auth";
 
 const MyPlantList = () => {
   let [bookmarks, setBookmarks] = useState([]);
@@ -15,26 +16,30 @@ const MyPlantList = () => {
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    if (token) {
-      getBookmark();
-    } else {
-      setModal({
-        message: "로그인이 필요합니다.",
-        callback: () => {
-          history.replace("/login");
-          setModal(null);
-        },
-      });
-    }
+    /*token이 refresh 될때 인증상태가 유효한지 확인
+      (page refresh 와 logout을 구분)
+    */
+    getAuth().onAuthStateChanged((user) => {
+      // 인증 상태가 변경될때 비동기 콜백 수신
+      if (user) getBookmark();
+      else {
+        setModal({
+          message: "로그인이 필요합니다.",
+          callback: () => {
+            history.replace("/login");
+            setModal(null);
+          },
+        });
+      }
+    });
   }, [token, history]);
 
   const getBookmark = async () => {
     try {
       setError(null);
       setLoading(true);
-      let token = localStorage.getItem("login_token");
 
-      let bookmarkList = await getBookmarkList(token);
+      let bookmarkList = await getBookmarkList();
       setBookmarks(bookmarkList);
     } catch (error) {
       setError(error.message);

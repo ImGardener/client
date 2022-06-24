@@ -12,14 +12,14 @@ const PlantItem = (props) => {
   const bookmarkStyle = `${classes["bookmark__btn"]} ${
     bookmark && classes["active"]
   }`;
-  const token = useSelector((state) => state.auth.token);
+  const isLogin = useSelector((state) => state.auth.isLogin);
   useEffect(() => {
-    if (!token) {
+    if (!isLogin) {
       setBookmark(null);
     }
-  }, [token]);
+  }, [isLogin]);
   const changeBookmarkHandler = async () => {
-    if (!token) {
+    if (!isLogin) {
       return setModal({
         message: "로그인이 필요한 서비스 입니다.",
         type: "ERROR",
@@ -29,7 +29,7 @@ const PlantItem = (props) => {
       });
     }
     if (!bookmark) {
-      let bookmarkId = await addBookmark(token, {
+      let bookmarkId = await addBookmark({
         plantId: props.plantId,
         name: props.name,
         imgLink: props.imgLink,
@@ -39,9 +39,7 @@ const PlantItem = (props) => {
       setBookmark(bookmarkId);
     } else {
       removeBookmark({
-        token,
         bookmarkId: bookmark,
-        plantId: props.plantId,
       });
       setBookmark(false);
     }

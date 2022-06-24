@@ -11,11 +11,16 @@ import { useDispatch } from "react-redux";
 import { autoLoginThunk } from "./store/modules/auth";
 import MyPlantList from "./component/Plants/MyPlantList";
 import ErrorBoundary from "./component/ErrorBoundary/ErrorBoundary";
+import { getAuth } from "firebase/auth";
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(autoLoginThunk());
+    // page refresh시 auth 정보 가져오기
+    getAuth().onAuthStateChanged((user) => {
+      if (user) dispatch(autoLoginThunk(user.getIdToken()));
+    });
   }, [dispatch]);
   return (
     <div className="App">

@@ -1,5 +1,6 @@
 import { getVarietyList } from "../../utils/search-apis";
 import { getBookmarkList } from "../../utils/bookmark-apis";
+import { DEFAULT_ERROR } from "../../utils/errorCase";
 
 const GET_PLANTS_REQUEST = "plants/get_plants_request";
 const GET_PLANTS = "plants/get_plants";
@@ -26,7 +27,7 @@ export const getPlantsRequest = () => {
 export const getPlantError = (error) => {
   return {
     type: GET_PLANTS_ERROR,
-    value: error || "request is failed",
+    value: error || DEFAULT_ERROR,
   };
 };
 
@@ -69,13 +70,13 @@ export const searchThunk = (requestConfig) => {
     }
   };
 };
-export const searchThunkWithBookmark = (requestConfig, token) => {
+export const searchThunkWithBookmark = (requestConfig) => {
   return async (dispatch, state) => {
     try {
       dispatch(getPlantsRequest());
       const [plants, bookmarkList] = await Promise.all([
         getVarietyList(requestConfig),
-        getBookmarkList(token),
+        getBookmarkList(),
       ]);
 
       if (bookmarkList.length && plants.length) {

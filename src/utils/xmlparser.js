@@ -1,3 +1,5 @@
+// xml Data을 JSON으로 변환하는 함수
+//childNodeName가 존재할때까지 재귀 호출
 export function parseXmlToJson(xml) {
   let response = {};
   function DFS(element) {

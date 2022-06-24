@@ -1,84 +1,67 @@
-import { getUserInfoById } from "./user-apis";
-const DATABASE_URL = process.env.REACT_APP_DATABASE_URL;
-export const getBookmarkList = async (token) => {
+import { db } from "./firebase";
+import { ref, get, update, push, child, remove } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { DEFAULT_ERROR } from "./errorCase";
+const bookmark = "bookmark/";
+export const getBookmarkList = async () => {
   try {
-    const { userId } = await getUserInfoById(token);
+    // uid로 bookmarkRef 참조
+    const bookmarkRef = ref(db, bookmark + getAuth().currentUser.uid + "/");
 
-    let url = `${DATABASE_URL}/bookmark/${userId}.json?auth=${token}`;
-    let response = await fetch(url, {
-      method: "GET",
+    // uid로 bookmarkList 조회 후 snapshot 반환.
+    let result = await get(bookmarkRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        let todos = snapshot.val();
+        return todos;
+      } else {
+        return [];
+      }
     });
-    if (!response.ok) {
-      let errorMessage = "request is failed!";
-      let responseJson = await response.json();
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
+    if (!result) return [];
 
-    let responseJson = await response.json();
-
-    if (!responseJson) return [];
-    let result = [];
-
-    for (let plantId of Object.keys(responseJson)) {
-      result.push({
-        bookmarkId: plantId,
-        plantId: responseJson[plantId].plantId,
-        description: responseJson[plantId].description,
-        imgLink: responseJson[plantId].imgLink,
-        instt: responseJson[plantId].instt,
-        name: responseJson[plantId].name,
+    // object type return값을 정리
+    const bookmarkList = [];
+    for (let bookmarkId of Object.keys(result)) {
+      bookmarkList.push({
+        bookmarkId: bookmarkId,
+        plantId: result[bookmarkId].plantId,
+        description: result[bookmarkId].description,
+        imgLink: result[bookmarkId].imgLink,
+        instt: result[bookmarkId].instt,
+        name: result[bookmarkId].name,
       });
     }
-    return result;
+
+    return bookmarkList;
   } catch (error) {
-    throw error;
+    throw DEFAULT_ERROR;
   }
 };
 
-export const addBookmark = async (token, requestConfig) => {
+export const addBookmark = async (requestConfig) => {
   try {
-    const { userId } = await getUserInfoById(token);
-
-    let url = `${DATABASE_URL}/bookmark/${userId}.json?auth=${token}`;
-    let response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(requestConfig),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!response.ok) {
-      let errorMessage = "request is failed!";
-      let responseJson = await response.json();
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
-    let responseJson = await response.json();
-    return responseJson.name;
+    // bookmark를 추가하기 위한 새로운 key를 형성
+    const newPostKey = push(
+      child(ref(db), bookmark + getAuth().currentUser.uid + "f")
+    ).key;
+    // 형성한 키로 bookmark 정보 업데이트
+    await update(
+      ref(db, bookmark + getAuth().currentUser.uid + "/" + newPostKey),
+      requestConfig
+    );
+    return newPostKey;
   } catch (error) {
-    throw error;
+    throw DEFAULT_ERROR;
   }
 };
-export const removeBookmark = async ({ token, bookmarkId, plantId }) => {
-  try {
-    const { userId } = await getUserInfoById(token);
-    let url = `${DATABASE_URL}/bookmark/${userId}/${bookmarkId}.json?auth=${token}`;
-    let response = await fetch(url, {
-      method: "DELETE",
-      body: JSON.stringify({ plantId }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!response.ok) {
-      let errorMessage = "request is failed!";
-      let responseJson = await response.json();
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
 
-    let responseJson = await response.json();
+export const removeBookmark = async ({ bookmarkId }) => {
+  try {
+    // 기존 북마크 제거.
+    await remove(
+      ref(db, "bookmark/" + getAuth().currentUser.uid + "/" + bookmarkId)
+    );
   } catch (error) {
-    throw error;
+    throw DEFAULT_ERROR;
   }
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
@@ -23,6 +23,7 @@ const SearchForm = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     Promise.all([getInsttList(), getCategoryList()])
       .then(([reponse1, reponse2]) => {
@@ -30,8 +31,12 @@ const SearchForm = () => {
         setCategoryList(reponse2);
       })
       .catch((e) => {
-        // 오류처리하기
-        alert(e);
+        return setModal({
+          message: e.message,
+          callback: () => {
+            setModal(false);
+          },
+        });
       });
   }, []);
 
@@ -57,7 +62,6 @@ const SearchForm = () => {
     if (searchWord.trim() === "") {
       return setModal({
         message: "검색어를 입력하세요.",
-        type: "ERROR",
         callback: () => {
           setModal(false);
         },
@@ -72,10 +76,8 @@ const SearchForm = () => {
       category,
       svcCodeNm: word,
     };
-    const token = localStorage.getItem("login_token");
     if (token) {
-      // dispatch(searchThunkWithBookmark(config, token));
-      dispatch(searchThunkWithBookmark(config, token));
+      dispatch(searchThunkWithBookmark(config));
     } else {
       dispatch(searchThunk(config));
     }

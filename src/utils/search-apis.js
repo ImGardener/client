@@ -1,24 +1,16 @@
+import { DEFAULT_ERROR } from "./errorCase";
 import { parseXmlToJson } from "./xmlparser";
 const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
 
 export const getInsttList = async () => {
   try {
-    let url = "/proxyb/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
+    let url = "/nonsaro/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
 
-    let data = await response.text();
-    const xml = new DOMParser().parseFromString(data, "text/xml");
-    const result = parseXmlToJson(xml).response;
-
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.header.resultMsg);
-    }
+    const result = await nongsaroDataParsing(response);
 
     const instts = result.body.items.item.map((instt) => {
       return {
@@ -35,24 +27,14 @@ export const getInsttList = async () => {
 
 export const getCategoryList = async () => {
   try {
-    let url = "/proxyb/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
+    let url = "/nonsaro/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
 
-    let data = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, "text/xml");
+    const result = await nongsaroDataParsing(response);
 
-    const result = parseXmlToJson(xml).response;
-
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.headers.resultMsg);
-    }
     const category = result.body.items.item.map((category) => {
       return {
         value: category.categoryCode,
@@ -71,7 +53,7 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
     let url =
-      "/proxyb/varietyInfo/varietyList?apiKey=" +
+      "/nonsaro/varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
       "&svcCodeNm=" +
       svcCodeNm +
@@ -81,18 +63,9 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    let data = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, "text/xml");
 
-    const result = parseXmlToJson(xml).response;
+    const result = await nongsaroDataParsing(response);
 
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.headers.resultMsg);
-    }
     let preVarieties = {};
     let varieties = [];
     if (result.body.items.totalCount < 1) return [];
@@ -114,4 +87,20 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
   } catch (error) {
     throw error;
   }
+};
+
+const nongsaroDataParsing = async (response) => {
+  if (!response.ok) {
+    throw new Error(DEFAULT_ERROR);
+  }
+
+  let data = await response.text();
+  const xml = new DOMParser().parseFromString(data, "text/xml");
+
+  const result = parseXmlToJson(xml).response;
+
+  if (result.header.resultCode !== "00") {
+    throw new Error(result.headers.resultMsg);
+  }
+  return result;
 };

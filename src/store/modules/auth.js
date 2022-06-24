@@ -1,3 +1,5 @@
+import { getAuth } from "firebase/auth";
+import { DEFAULT_ERROR } from "../../utils/errorCase";
 import { getUser } from "../../utils/user-apis";
 
 const LOGIN_SUCCESS = "auth/login";
@@ -25,7 +27,7 @@ export const loginSuccess = (token) => {
     value: token,
   };
 };
-export const logout = (token) => {
+export const logout = () => {
   return {
     type: LOGOUT_SUCCESS,
     value: null,
@@ -34,7 +36,7 @@ export const logout = (token) => {
 export const authError = (error) => {
   return {
     type: AUTH_ERROR,
-    value: error || "request is failed",
+    value: error || DEFAULT_ERROR,
   };
 };
 export const resetError = () => {
@@ -53,13 +55,11 @@ const authReducer = (state = initialLoginState, action) => {
     }
     case LOGOUT_SUCCESS: {
       localStorage.removeItem("expired_date");
-      localStorage.removeItem("login_token");
       return { ...state, isLogin: false, token: null };
     }
 
     case AUTH_ERROR: {
       localStorage.removeItem("expired_date");
-      localStorage.removeItem("login_token");
       return { ...state, isLogin: false, loading: false, error: action.value };
     }
     case ERROR_RESET: {
@@ -84,7 +84,6 @@ export const loginThunk = ({ email, password }) => {
 
       // local token 저장
       localStorage.setItem("expired_date", expiredDate);
-      localStorage.setItem("login_token", token);
 
       dispatch(loginSuccess(token));
     } catch (error) {
@@ -92,23 +91,36 @@ export const loginThunk = ({ email, password }) => {
     }
   };
 };
-export const autoLoginThunk = () => {
+export const autoLoginThunk = (token) => {
   return (dispatch, state) => {
     try {
       const expiredDate = localStorage.getItem("expired_date");
-      const loginToken = localStorage.getItem("login_token");
 
       // 토큰이 유효하지 않으면 로그인 불가능.
-      if (!loginToken || !expiredDate) return;
+      if (!expiredDate) return;
 
       const isValid = checkToeknIsValid(expiredDate);
 
       // local token으로 로그인
-      if (isValid) dispatch(loginSuccess(loginToken));
+      if (isValid) dispatch(loginSuccess(token));
     } catch (error) {
       // 오류발생 시 local token 삭제
       localStorage.removeItem("expired_date");
-      localStorage.removeItem("login_token");
+    }
+  };
+};
+
+export const logoutThunk = () => {
+  return async (dispatch, state) => {
+    try {
+      // 인증정보 제거
+      await getAuth().signOut();
+      // local expired_date 제거.
+      localStorage.removeItem("expired_date");
+      dispatch(logout());
+    } catch (error) {
+      // 오류발생 시 local expired_date 삭제
+      localStorage.removeItem("expired_date");
     }
   };
 };
@@ -122,7 +134,6 @@ const checkToeknIsValid = (expiredDate) => {
     return true;
   } else {
     localStorage.removeItem("expired_date");
-    localStorage.removeItem("login_token");
     return false;
   }
 };
