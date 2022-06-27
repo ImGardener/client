@@ -10,3 +10,9 @@
   to =  "http://api.nongsaro.go.kr/service/:splat"
   status = 200
   force = true
+
+
+  [[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
