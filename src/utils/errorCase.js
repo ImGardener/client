@@ -20,7 +20,6 @@ export const errorHandler = async (response, errorCase = {}) => {
     let errorMessage = DEFAULT_ERROR;
     let responseJson = await response.json();
 
-    console.log(responseJson.error);
     // error case에서 해당하는 error message가 key값으로 존재하는 경우 return.
     //없는 경우 DEFAULT ERROR return.
     if (
