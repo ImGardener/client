@@ -95,6 +95,7 @@ const LoginForm = () => {
             type: "password",
             name: "password",
             placeholder: "password",
+            autoComplete: "on",
           }}
           onChange={passwordChangeHandler}
           onBlur={passwordFocusHandler}

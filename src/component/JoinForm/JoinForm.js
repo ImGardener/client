@@ -86,6 +86,7 @@ const JoinForm = () => {
             type: "password",
             name: "password",
             placeholder: "password",
+            autoComplete: "on",
           }}
           onChange={passwordChangeHandler}
           onBlur={passwordFocusHandler}
