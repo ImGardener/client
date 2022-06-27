@@ -2,8 +2,11 @@ import classes from "./FlowerOfDay.module.css";
 import { useEffect } from "react";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
+import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
+import useHttp from "../../hoc/use-https";
 
 const FlowerOfDay = (props) => {
+  const { requestHandler, error, status, data } = useHttp();
   const [flowerInfo, setFlowerInfo] = useState({
     name: "거베라",
     img: "",
@@ -12,18 +15,21 @@ const FlowerOfDay = (props) => {
   useEffect(() => {
     getFlowerOfDay();
   }, []);
-
-  const getFlowerOfDay = async () => {
-    try {
-      const result = await getTodayFlower();
-      setFlowerInfo(result);
-    } catch (error) {
+  useEffect(() => {
+    if (status === "SUCCESS" && data) {
+      setFlowerInfo(data);
+    } else if (error) {
       setFlowerInfo({
         name: "거베라",
         img: "http://www.nongsaro.go.kr/portal/imgView.do?ep=a5gb/CMEYLclIUPoWw9/DTnomi9S/YDfHD2ofIDhNOqPWPXCk6r5f9/5EwSYQ8lvB@14eQKulp3yt2AmBvaAPM3fCBe83GYJtr@G9Xgc/x4!",
       });
     }
+  }, [status, data]);
+  const getFlowerOfDay = async () => {
+    await requestHandler(getTodayFlower);
   };
+
+  if (status === "PENDING") return <LoadingSpinner />;
   return (
     <div className={classes["flower-of-day"]}>
       <div className={classes["flower"]}>

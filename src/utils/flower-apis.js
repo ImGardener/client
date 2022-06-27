@@ -17,7 +17,8 @@ export const getTodayFlower = async (today) => {
     const xml = new DOMParser().parseFromString(data, "text/xml");
     const result = parseXmlToJson(xml)?.document?.root;
 
-    if (result.resultCode !== "1") {
+    if (!result) throw new Error(DEFAULT_ERROR);
+    if (result?.resultCode !== "1") {
       throw new Error(result.resultMsg);
     }
     const flowerInfo = {
