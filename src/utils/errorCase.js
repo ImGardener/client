@@ -6,7 +6,7 @@ export const AUTH_ERROR = {
   "auth/too-many-requests":
     "비정상적인 요청으로 기기의 요청이 차단되었습니다. 나중에 다시 시도하세요.",
   "auth/wrong-password": "이메일 또는 비밀번호를 확인하세요",
-  "auth/invalid-email": "이메일 또는 비밀번호를 확인하세요",
+  "auth/invalid-email": "유효하지않은 이메일입니다.",
 };
 
 export const BOOKMARK_ERROR = {
