@@ -18,8 +18,12 @@ function App() {
 
   useEffect(() => {
     // page refresh시 auth 정보 가져오기
-    getAuth().onAuthStateChanged((user) => {
-      if (user) dispatch(autoLoginThunk(user.getIdToken()));
+    getAuth().onAuthStateChanged(async (user) => {
+      if (user) {
+        // 비동기로 token 정보를 가져와서 로그인
+        const token = await user.getIdToken();
+        dispatch(autoLoginThunk(token));
+      }
     });
   }, [dispatch]);
   return (

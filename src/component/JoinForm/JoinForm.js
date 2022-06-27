@@ -5,14 +5,17 @@ import classes from "./JoinForm.module.css";
 import { addUser } from "../../utils/user-apis";
 import Modal from "../UI/Modal/Modal";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
+import useHttp from "../../hoc/use-https";
+import { useDispatch } from "react-redux";
+import { logoutThunk } from "../../store/modules/auth";
 
 const JoinForm = () => {
   const [modal, setModal] = useState(null);
-  const [loading, setLoading] = useState(false);
-
+  const { requestHandler, status, error, data } = useHttp();
+  const dispatch = useDispatch();
   const {
     value: enteredEmail,
     hasError: emailHasError,
@@ -30,14 +33,10 @@ const JoinForm = () => {
 
   const history = useHistory();
 
-  const submitJoinForm = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await addUser({
-        email: enteredEmail,
-        password: enteredPassword,
-      });
+  useEffect(() => {
+    if (status === "SUCCESS") {
+      // 회원가입 시 다시 로그인 유도를 위한 logout처리
+      dispatch(logoutThunk());
       setModal({
         type: "SUCCESS",
         message: "가입되었습니다!",
@@ -46,17 +45,22 @@ const JoinForm = () => {
           history.replace("/login");
         },
       });
-    } catch (error) {
+    } else if (error) {
       setModal({
         type: "ERROR",
-        message: error?.message,
+        message: error,
       });
-    } finally {
-      setLoading(false);
     }
+  }, [status]);
+  const submitJoinForm = async (e) => {
+    e.preventDefault();
+    await requestHandler(addUser, {
+      email: enteredEmail,
+      password: enteredPassword,
+    });
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (status === "PENDING") return <LoadingSpinner />;
 
   return (
     <div className={classes.join}>
