@@ -19,7 +19,6 @@ export const getBookmarkList = async () => {
         return [];
       }
     });
-    console.log(result);
     if (!result) return [];
 
     // object type return값을 정리

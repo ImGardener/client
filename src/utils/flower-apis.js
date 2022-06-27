@@ -6,9 +6,9 @@ const DATAGO_KEY = process.env.REACT_APP_DATAGO_KEY;
 export const getTodayFlower = async (today) => {
   try {
     let url = `/tDflower/selectTodayFlower01?serviceKey=${DATAGO_KEY}`;
-    const response = await fetch(url, {
-      method: "GET",
-    });
+
+    let response = await fetchWrapper(url, {}, 3000);
+
     if (!response.ok) {
       throw new Error(DEFAULT_ERROR);
     }
@@ -31,4 +31,19 @@ export const getTodayFlower = async (today) => {
   } catch (error) {
     throw error;
   }
+};
+
+const fetchWrapper = async (url, requestConfig = {}, ms = 2000) => {
+  if (!url) throw new Error("INVALID URL");
+  return new Promise((resolve, reject) => {
+    fetch(url, requestConfig)
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => reject(error));
+
+    setTimeout(() => {
+      reject(new Error("TIME_OUT"));
+    }, ms);
+  });
 };

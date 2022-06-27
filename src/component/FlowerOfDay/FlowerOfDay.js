@@ -24,7 +24,7 @@ const FlowerOfDay = (props) => {
         img: "http://www.nongsaro.go.kr/portal/imgView.do?ep=a5gb/CMEYLclIUPoWw9/DTnomi9S/YDfHD2ofIDhNOqPWPXCk6r5f9/5EwSYQ8lvB@14eQKulp3yt2AmBvaAPM3fCBe83GYJtr@G9Xgc/x4!",
       });
     }
-  }, [status, data]);
+  }, [status, error, data]);
   const getFlowerOfDay = async () => {
     await requestHandler(getTodayFlower);
   };
