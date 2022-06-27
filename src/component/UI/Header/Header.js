@@ -22,11 +22,12 @@ const Header = () => {
         ImGardener
       </Link>
       {/* <p className={classes["header__logo"]}>ImGardener </p> */}
-      {!isLogin ? (
+      {isLogin === false && (
         <Button className={classes["header__btn"]} onClick={linkToLoginHandler}>
           로그인
         </Button>
-      ) : (
+      )}
+      {isLogin === true && (
         <Button className={classes["header__btn"]} onClick={logoutHandler}>
           로그아웃
         </Button>

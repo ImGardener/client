@@ -9,7 +9,7 @@ const AUTH_ERROR = "auth/get_auth_error";
 const ERROR_RESET = "auth/reset_error";
 
 const initialLoginState = {
-  isLogin: false,
+  isLogin: null,
   token: null,
   loading: false,
   error: null,
