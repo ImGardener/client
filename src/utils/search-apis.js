@@ -1,11 +1,10 @@
 import { DEFAULT_ERROR } from "./errorCase";
 import { parseXmlToJson } from "./xmlparser";
 const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
-const urlPath = "/nonsaro/";
-// /nonsaro/
+
 export const getInsttList = async () => {
   try {
-    let url = urlPath + "varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
+    let url = "/nonsaro/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -28,7 +27,7 @@ export const getInsttList = async () => {
 
 export const getCategoryList = async () => {
   try {
-    let url = urlPath + "varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
+    let url = "/nonsaro/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -54,8 +53,7 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
     let url =
-      urlPath +
-      "varietyInfo/varietyList?apiKey=" +
+      "/nonsaro/varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
       "&svcCodeNm=" +
       svcCodeNm +
