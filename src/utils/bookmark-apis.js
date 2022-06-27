@@ -1,10 +1,12 @@
 import { db } from "./firebase";
 import { ref, get, update, push, child, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
-import { DEFAULT_ERROR } from "./errorCase";
+import { DEFAULT_ERROR, NEED_AUTH } from "./errorCase";
 const bookmark = "bookmark/";
 export const getBookmarkList = async () => {
   try {
+    const auth = getAuth();
+    if (!auth.currentUser) throw new Error(NEED_AUTH);
     // uid로 bookmarkRef 참조
     const bookmarkRef = ref(db, bookmark + getAuth().currentUser.uid + "/");
 
@@ -17,6 +19,7 @@ export const getBookmarkList = async () => {
         return [];
       }
     });
+    console.log(result);
     if (!result) return [];
 
     // object type return값을 정리
@@ -34,7 +37,7 @@ export const getBookmarkList = async () => {
 
     return bookmarkList;
   } catch (error) {
-    throw DEFAULT_ERROR;
+    throw error;
   }
 };
 

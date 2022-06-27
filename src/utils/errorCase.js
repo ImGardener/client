@@ -1,4 +1,6 @@
 export const DEFAULT_ERROR = "요청에 실패하였습니다. 관리자에게 문의하세요.";
+export const NEED_AUTH = "로그인이 필요합니다.";
+
 export const AUTH_ERROR = {
   "auth/user-token-expired": "로그인이 만료되었습니다.",
   "auth/user-disabled": "유효하지않은 계정입니다.",

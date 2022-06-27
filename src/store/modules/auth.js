@@ -54,12 +54,10 @@ const authReducer = (state = initialLoginState, action) => {
       return { ...state, isLogin: true, loading: false, token: action.value };
     }
     case LOGOUT_SUCCESS: {
-      localStorage.removeItem("expired_date");
       return { ...state, isLogin: false, token: null };
     }
 
     case AUTH_ERROR: {
-      localStorage.removeItem("expired_date");
       return { ...state, isLogin: false, loading: false, error: action.value };
     }
     case ERROR_RESET: {
@@ -74,17 +72,10 @@ const authReducer = (state = initialLoginState, action) => {
 export const loginThunk = ({ email, password }) => {
   return async (dispatch, state) => {
     // 유효하지 않으므로 로그인 불가능.
-    localStorage.removeItem("isLogin");
     if (!email || !password) return;
     try {
       dispatch(loginRequest());
-      const { token, expiresIn } = await getUser({ email, password });
-
-      // 토큰 유효시간 계산
-      const expiredDate = calcTokenExpiredDate(expiresIn);
-
-      // local token 저장
-      localStorage.setItem("expired_date", expiredDate);
+      const { token } = await getUser({ email, password });
 
       dispatch(loginSuccess(token));
     } catch (error) {
@@ -95,23 +86,9 @@ export const loginThunk = ({ email, password }) => {
 export const autoLoginThunk = (token) => {
   return (dispatch, state) => {
     try {
-      const expiredDate = localStorage.getItem("expired_date");
-      let tokenIsValid = false;
-      // 토큰이 유효하지 않으면 로그인 불가능.
-      if (expiredDate) {
-        tokenIsValid = checkToeknIsValid(expiredDate);
-      }
-      // 유효하지않은 토큰 강제로그아웃처리.
-      if (!expiredDate || !tokenIsValid) {
-        throw new Error("로그인이 만료되었습니다.");
-      }
-
-      // local token으로 로그인
-      if (tokenIsValid) dispatch(loginSuccess(token));
+      dispatch(loginSuccess(token));
     } catch (error) {
-      // 오류발생 시 local token 삭제
-      localStorage.removeItem("isLogin");
-      localStorage.removeItem("expired_date");
+      dispatch(authError(error?.message));
     }
   };
 };
@@ -121,34 +98,30 @@ export const logoutThunk = () => {
     try {
       // 인증정보 제거
       await getAuth().signOut();
-      // local expired_date 제거.
-      localStorage.removeItem("expired_date");
-      localStorage.removeItem("isLogin");
+
       dispatch(logout());
     } catch (error) {
-      // 오류발생 시 local expired_date 삭제
-      localStorage.removeItem("isLogin");
-      localStorage.removeItem("expired_date");
+      dispatch(authError(error?.message));
     }
   };
 };
 
-// 현재 토큰이 유효한지 검증
-const checkToeknIsValid = (expiredDate) => {
-  const expiredD = new Date(expiredDate).getTime();
-  const current = new Date().getTime();
+// // 현재 토큰이 유효한지 검증
+// const checkToeknIsValid = (expiredDate) => {
+//   const expiredD = new Date(expiredDate).getTime();
+//   const current = new Date().getTime();
 
-  if (expiredD - current > 10000) {
-    return true;
-  } else {
-    localStorage.removeItem("expired_date");
-    return false;
-  }
-};
+//   if (expiredD - current > 10000) {
+//     return true;
+//   } else {
+//     localStorage.removeItem("expired_date");
+//     return false;
+//   }
+// };
 
-// 토큰의 만료시간 계산.
-const calcTokenExpiredDate = (expirationIn) => {
-  const expiredTime = new Date(new Date().getTime() + expirationIn * 1000);
-  return expiredTime;
-};
+// // 토큰의 만료시간 계산.
+// const calcTokenExpiredDate = (expirationIn) => {
+//   const expiredTime = new Date(new Date().getTime() + expirationIn * 1000);
+//   return expiredTime;
+// };
 export default authReducer;

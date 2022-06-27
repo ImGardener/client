@@ -3,6 +3,8 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { AUTH_ERROR, firebaseErrorHandler } from "./errorCase";
 
@@ -10,6 +12,8 @@ import { AUTH_ERROR, firebaseErrorHandler } from "./errorCase";
 export const getUser = async (info) => {
   try {
     const auth = getAuth();
+    // 임시 인증 - 세션
+    await setPersistence(auth, browserSessionPersistence);
     let userCredential = await signInWithEmailAndPassword(
       auth,
       info.email,
@@ -19,7 +23,6 @@ export const getUser = async (info) => {
     const user = userCredential._tokenResponse;
 
     // 자동로그인 방지
-    localStorage.setItem("isLogin", "isLogin");
     return { token: user.idToken, expiresIn: user.expiresIn };
   } catch (error) {
     // 정의된 error case에 해당하는 errorMessage throw;

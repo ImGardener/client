@@ -7,8 +7,8 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Join from "./pages/Join";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { autoLoginThunk } from "./store/modules/auth";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "./store/modules/auth";
 import MyPlantList from "./component/Plants/MyPlantList";
 import ErrorBoundary from "./component/ErrorBoundary/ErrorBoundary";
 import { getAuth } from "firebase/auth";
@@ -16,14 +16,12 @@ import { getAuth } from "firebase/auth";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    const isLogin = localStorage.getItem("isLogin");
-
     // page refresh시 auth 정보 가져오기
     getAuth().onAuthStateChanged(async (user) => {
-      if (user && isLogin) {
+      if (user) {
         // 비동기로 token 정보를 가져와서 로그인
         const token = await user.getIdToken();
-        dispatch(autoLoginThunk(token));
+        dispatch(loginSuccess(token));
       }
     });
   }, [dispatch]);
