@@ -1,47 +1,48 @@
-import classes from "./PlantItem.module.css";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { addBookmark, removeBookmark } from "../../utils/bookmark-apis";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { addCollection, removeCollection } from "../../utils/collection-apis";
 import Modal from "../UI/Modal/Modal";
+import classes from "./PlantItem.module.css";
+
 const PlantItem = (props) => {
-  const [bookmark, setBookmark] = useState(props.bookmarkId);
+  const [collection, setCollection] = useState(props.collectionId);
   const [modal, setModal] = useState(null);
 
-  const bookmarkStyle = `${classes["bookmark__btn"]} ${
-    bookmark && classes["active"]
+  const collectionStyle = `${classes["collection__btn"]} ${
+    collection && classes["active"]
   }`;
   const isLogin = useSelector((state) => state.auth.isLogin);
   useEffect(() => {
     if (!isLogin) {
-      setBookmark(null);
+      setCollection(null);
     }
   }, [isLogin]);
-  const changeBookmarkHandler = async () => {
+  const changeCollectionHandler = async () => {
     if (!isLogin) {
       return setModal({
-        message: "로그인이 필요한 서비스 입니다.",
+        message: "로그인이 필요합니다.",
         type: "ERROR",
         callback: () => {
           setModal(null);
         },
       });
     }
-    if (!bookmark) {
-      let bookmarkId = await addBookmark({
+    if (!collection) {
+      let collectionId = await addCollection({
         plantId: props.plantId,
         name: props.name,
         imgLink: props.imgLink,
         description: props.description,
         instt: props.instt,
       });
-      setBookmark(bookmarkId);
+      setCollection(collectionId);
     } else {
-      removeBookmark({
-        bookmarkId: bookmark,
+      removeCollection({
+        collectionId: collection,
       });
-      setBookmark(false);
+      setCollection(false);
     }
   };
   return (
@@ -56,7 +57,7 @@ const PlantItem = (props) => {
           <h3>{props.name}</h3>
           <p className={classes["plant__description"]}>{props.description}</p>
           <p className={classes["plant__property"]}>#{props.instt}</p>
-          <button className={bookmarkStyle} onClick={changeBookmarkHandler}>
+          <button className={collectionStyle} onClick={changeCollectionHandler}>
             <FontAwesomeIcon icon={faHeart} />
           </button>
         </div>

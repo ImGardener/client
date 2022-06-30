@@ -49,7 +49,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.bookmark__btn {
+.collection__btn {
   border: none;
   background-color: transparent;
   position: absolute;

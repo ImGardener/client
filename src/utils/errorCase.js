@@ -11,7 +11,7 @@ export const AUTH_ERROR = {
   "auth/invalid-email": "유효하지않은 이메일입니다.",
 };
 
-export const BOOKMARK_ERROR = {
+export const COLLECTION_ERROR = {
   TOO_MANY_ATTEMPTS_TRY_LATER:
     "비정상적인 요청으로 기기의 요청이 차단되었습니다. 나중에 다시 시도하세요.",
 };
