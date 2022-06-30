@@ -8,17 +8,17 @@
   height: 100%;
 }
 .modal-ui {
-  position: absolute;
+  position: fixed;
   width: 50%;
   max-width: 560px;
   height: 25vh;
   min-height: 300px;
   background-color: white;
   margin: auto;
-  top: 40%;
+  top: 10%;
   left: 50%;
 
-  transform: translate(-50%, -70%);
+  transform: translateX(-50%);
 
   border-radius: var(--size-border-radius-large);
   text-align: center;
