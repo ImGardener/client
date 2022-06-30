@@ -106,22 +106,4 @@ export const logoutThunk = () => {
   };
 };
 
-// // 현재 토큰이 유효한지 검증
-// const checkToeknIsValid = (expiredDate) => {
-//   const expiredD = new Date(expiredDate).getTime();
-//   const current = new Date().getTime();
-
-//   if (expiredD - current > 10000) {
-//     return true;
-//   } else {
-//     localStorage.removeItem("expired_date");
-//     return false;
-//   }
-// };
-
-// // 토큰의 만료시간 계산.
-// const calcTokenExpiredDate = (expirationIn) => {
-//   const expiredTime = new Date(new Date().getTime() + expirationIn * 1000);
-//   return expiredTime;
-// };
 export default authReducer;
