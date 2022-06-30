@@ -1,11 +1,13 @@
 import { DEFAULT_ERROR } from "./errorCase";
 import { parseXmlToJson } from "./xmlparser";
 const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
+const urlPath = "/service/";
+// /nonsaro/
 
 // 기관명 조회 API
 export const getInsttList = async () => {
   try {
-    let url = "/nonsaro/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
+    let url = urlPath + "varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -28,7 +30,7 @@ export const getInsttList = async () => {
 // 카테고리 조회 API
 export const getCategoryList = async () => {
   try {
-    let url = "/nonsaro/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
+    let url = urlPath + "varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -57,12 +59,15 @@ export const getVarietyList = async ({
   pageNo,
 }) => {
   try {
+    // svcCodeNm = svcCodeNm.trim();
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
     const svcCodeNmParam = `&svcCodeNm=${svcCodeNm}`;
     const pageNoParam = `&pageNo=${pageNo}`;
+    if (svcCodeNm === "t") throw new Error("test");
     let url =
-      "/nonsaro/varietyInfo/varietyList?apiKey=" +
+      urlPath +
+      "varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
       svcCodeNmParam +
       insttNameParam +
@@ -73,11 +78,12 @@ export const getVarietyList = async ({
       method: "POST",
       headers: { "content-type": "application/json" },
     });
-
     const result = await nongsaroDataParsing(response);
 
     let varieties = [];
+    console.log("url ::: ", url);
 
+    console.log("result ::: ", result);
     // 남은 length 가 1일경우 객체타입으로 response.
     if (result.body.items.totalCount - (pageNo - 1) * 10 === 1) {
       result.body.items.item = [result.body.items.item];
