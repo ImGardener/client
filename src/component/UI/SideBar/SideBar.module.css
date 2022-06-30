@@ -7,6 +7,7 @@
   position: absolute;
   overflow: auto;
   background-color: var(--color-main-green);
+  transition: transform 300ms ease;
 }
 .search {
   padding: 1rem;
@@ -48,9 +49,28 @@
   width: 100%;
   padding: 1.5rem 1rem;
 }
-
+.toggle-btn {
+  bottom: var(--base-blank-medium);
+  position: fixed;
+  left: 0px;
+  border-radius: 30%;
+  transform: translateX(-100%);
+  z-index: 4;
+  padding: var(--base-blank-xsmall);
+  transition: transform 300ms ease;
+}
+.toggle-btn.active {
+  transform: translateX(calc(12rem - 50%));
+}
 @media screen and (max-width: 760px) {
+  .toggle-btn {
+    transform: translateX(-30%);
+  }
   .sidenav {
     transform: translateX(-12rem);
+    z-index: 5;
+  }
+  .sidenav.active {
+    transform: translateX(0rem);
   }
 }

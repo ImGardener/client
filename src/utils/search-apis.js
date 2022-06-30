@@ -1,24 +1,19 @@
+import { DEFAULT_ERROR } from "./errorCase";
 import { parseXmlToJson } from "./xmlparser";
 const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
+const urlPath = "/service/";
+// /nonsaro/
 
+// 기관명 조회 API
 export const getInsttList = async () => {
   try {
-    let url = "/service/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
+    let url = urlPath + "varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
 
-    let data = await response.text();
-    const xml = new DOMParser().parseFromString(data, "text/xml");
-    const result = parseXmlToJson(xml).response;
-
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.header.resultMsg);
-    }
+    const result = await nongsaroDataParsing(response);
 
     const instts = result.body.items.item.map((instt) => {
       return {
@@ -32,27 +27,17 @@ export const getInsttList = async () => {
     throw error;
   }
 };
-
+// 카테고리 조회 API
 export const getCategoryList = async () => {
   try {
-    let url = "/service/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
+    let url = urlPath + "varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
 
-    let data = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, "text/xml");
+    const result = await nongsaroDataParsing(response);
 
-    const result = parseXmlToJson(xml).response;
-
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.headers.resultMsg);
-    }
     const category = result.body.items.item.map((category) => {
       return {
         value: category.categoryCode,
@@ -66,52 +51,73 @@ export const getCategoryList = async () => {
   }
 };
 
-export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
+// 품종 조회 API
+export const getVarietyList = async ({
+  category,
+  insttName,
+  svcCodeNm,
+  pageNo,
+}) => {
   try {
+    // svcCodeNm = svcCodeNm.trim();
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
+    const svcCodeNmParam = `&svcCodeNm=${svcCodeNm}`;
+    const pageNoParam = `&pageNo=${pageNo}`;
+    if (svcCodeNm === "t") throw new Error("test");
     let url =
-      "/service/varietyInfo/varietyList?apiKey=" +
+      urlPath +
+      "varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
-      "&svcCodeNm=" +
-      svcCodeNm +
+      svcCodeNmParam +
       insttNameParam +
-      categoryParam;
+      categoryParam +
+      pageNoParam +
+      "&numOfRows=10";
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
     });
-    if (!response.ok) {
-      throw new Error("request is failed!");
-    }
-    let data = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, "text/xml");
+    const result = await nongsaroDataParsing(response);
 
-    const result = parseXmlToJson(xml).response;
-
-    if (result.header.resultCode !== "00") {
-      throw new Error(result.headers.resultMsg);
-    }
-    let preVarieties = {};
     let varieties = [];
-    if (result.body.items.totalCount < 1) return [];
-    result.body.items.item.forEach((variety) => {
-      if (!preVarieties[variety.prdlstCtgCode]) {
-        preVarieties[variety.prdlstCtgCode] = {
+    console.log("url ::: ", url);
+
+    console.log("result ::: ", result);
+    // 남은 length 가 1일경우 객체타입으로 response.
+    if (result.body.items.totalCount - (pageNo - 1) * 10 === 1) {
+      result.body.items.item = [result.body.items.item];
+    }
+    if (result.body.items.totalCount > 1) {
+      result.body.items.item.forEach((variety) => {
+        varieties.push({
           description: variety.mainChartrInfo,
           name: variety.svcCodeNm,
-          plantId: variety.prdlstCtgCode,
+          plantId: variety.cntntsNo,
           instt: variety.unbrngInsttInfo,
           imgLink: variety.imgFileLink,
-        };
-      }
-    });
-    for (let variety of Object.keys(preVarieties)) {
-      varieties.push(preVarieties[variety]);
+        });
+      });
     }
-    return varieties;
+    return { plants: varieties, totalCount: result.body.items.totalCount };
   } catch (error) {
     throw error;
   }
+};
+
+const nongsaroDataParsing = async (response) => {
+  if (!response.ok) {
+    throw new Error(DEFAULT_ERROR);
+  }
+
+  let data = await response.text();
+  const xml = new DOMParser().parseFromString(data, "text/xml");
+
+  const result = parseXmlToJson(xml).response;
+  if (!result) throw new Error(DEFAULT_ERROR);
+
+  if (result.header.resultCode !== "00") {
+    throw new Error(result.headers.resultMsg);
+  }
+  return result;
 };

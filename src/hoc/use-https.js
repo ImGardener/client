@@ -1,4 +1,5 @@
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useState } from "react";
+import { DEFAULT_ERROR } from "../utils/errorCase";
 const SUCCESS = "SUCCESS";
 const ERROR = "ERROR";
 const PENDING = "PENDING";
@@ -21,7 +22,7 @@ const useHttp = () => {
       return responseData;
     } catch (error) {
       setStatus(ERROR);
-      const errorMessage = error ? error.message : "request is failed";
+      const errorMessage = error ? error.message : DEFAULT_ERROR;
       setError(errorMessage);
     }
   }, []);

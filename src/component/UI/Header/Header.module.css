@@ -15,7 +15,7 @@
 }
 .header .header__logo {
   font-family: "Teko", sans-serif;
-  font-size: 40px;
+  font-size: var(--font-large);
   text-decoration: none;
   color: black;
 }
@@ -41,4 +41,10 @@
 .header__btn:active {
   background: transparent;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.26);
+}
+
+@media screen and (max-width: 760px) {
+  .header .header__logo {
+    font-size: var(--font-medium);
+  }
 }

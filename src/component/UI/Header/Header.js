@@ -1,20 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { logout } from "../../../store/modules/auth";
+import { logoutThunk } from "../../../store/modules/auth";
 import Button from "../Button/Button";
 import classes from "./Header.module.css";
 
 const Header = () => {
   const history = useHistory();
-  const isLogin = useSelector((state) => state.login.isLogin);
+  const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
 
   const linkToLoginHandler = () => {
     history.replace("/login");
   };
   const logoutHandler = () => {
-    dispatch(logout());
+    dispatch(logoutThunk());
   };
   return (
     <header className={classes.header}>

@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import React, { useCallback, useEffect, useState } from "react";
 import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
+import Modal from "../UI/Modal/Modal";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getCategoryList, getInsttList } from "../../utils/search-apis";
-import {
-  resetPlants,
-  searchThunk,
-  searchThunkWithBookmark,
-} from "../../store/modules/plants";
-import Modal from "../UI/Modal/Modal";
-const SearchForm = () => {
+
+const SearchForm = (props) => {
   const [modal, setModal] = useState(null);
   const [insttList, setInsttList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -21,8 +15,6 @@ const SearchForm = () => {
   const [category, setCategory] = useState("");
   const [searchWord, setSearchWord] = useState("");
 
-  const dispatch = useDispatch();
-  const location = useLocation();
   useEffect(() => {
     Promise.all([getInsttList(), getCategoryList()])
       .then(([reponse1, reponse2]) => {
@@ -30,25 +22,22 @@ const SearchForm = () => {
         setCategoryList(reponse2);
       })
       .catch((e) => {
-        // 오류처리하기
-        alert(e);
+        return setModal({
+          message: e.message,
+          callback: () => {
+            setModal(false);
+          },
+        });
       });
   }, []);
 
-  useEffect(() => {
-    if (location.state?.searchWord) {
-      searchPlants(location.state?.searchWord);
-    }
-    return () => dispatch(resetPlants());
-  }, [location.state]);
-
-  const insttChangeHandler = (event) => {
+  const insttChangeHandler = useCallback((event) => {
     setInstt(event.target.value);
-  };
+  }, []);
 
-  const categoryChangeHandler = (event) => {
+  const categoryChangeHandler = useCallback((event) => {
     setCategory(event.target.value);
-  };
+  }, []);
   const searchWordChangeHandler = (event) => {
     setSearchWord(event.target.value);
   };
@@ -57,28 +46,17 @@ const SearchForm = () => {
     if (searchWord.trim() === "") {
       return setModal({
         message: "검색어를 입력하세요.",
-        type: "ERROR",
         callback: () => {
           setModal(false);
         },
       });
     }
-
-    await searchPlants(searchWord);
-  };
-  const searchPlants = async (word) => {
     const config = {
       insttName: instt,
       category,
-      svcCodeNm: word,
+      svcCodeNm: searchWord.trim(),
     };
-    const token = localStorage.getItem("login_token");
-    if (token) {
-      // dispatch(searchThunkWithBookmark(config, token));
-      dispatch(searchThunkWithBookmark(config, token));
-    } else {
-      dispatch(searchThunk(config));
-    }
+    props.onSubmit(config);
   };
 
   return (
@@ -98,7 +76,6 @@ const SearchForm = () => {
             inputClassName={classes["search__search"]}
             icon={faSearch}
           />
-
           <SelectBox
             className={classes["filter"]}
             options={insttList}
@@ -118,4 +95,4 @@ const SearchForm = () => {
     </>
   );
 };
-export default SearchForm;
+export default React.memo(SearchForm);

@@ -1,7 +1,8 @@
+import React from "react";
 import classes from "./SelectBox.module.css";
 const SelectBox = (props) => {
   const styles = `${classes["select-box"]} ${props.className}`;
-
+  console.log("Imt selectBox");
   return (
     <select
       onChange={props.onChange}
@@ -20,4 +21,4 @@ const SelectBox = (props) => {
     </select>
   );
 };
-export default SelectBox;
+export default React.memo(SelectBox);

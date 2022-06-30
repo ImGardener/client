@@ -1,82 +1,47 @@
-const FIREBASE_KEY = process.env.REACT_APP_FIREBASE_KEY;
+import app from "./firebase";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
+import { AUTH_ERROR, firebaseErrorHandler } from "./errorCase";
 
-export const addUser = async (info) => {
-  try {
-    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_KEY}`;
-    let response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: info.email,
-        password: info.password,
-        returnSecureToken: true,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!response.ok) {
-      let errorMessage = "authentication is failed!";
-      let responseJson = await response.json();
-
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
-  } catch (error) {
-    throw error;
-  }
-};
+// eamil , password로 로그인
 export const getUser = async (info) => {
   try {
-    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_KEY}`;
-    let response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: info.email,
-        password: info.password,
-        returnSecureToken: true,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    const auth = getAuth();
+    // 임시 인증 - 세션
+    await setPersistence(auth, browserSessionPersistence);
+    let userCredential = await signInWithEmailAndPassword(
+      auth,
+      info.email,
+      info.password
+    );
 
-    if (!response.ok) {
-      let errorMessage = "authentication is failed!";
-      let responseJson = await response.json();
+    const user = userCredential._tokenResponse;
 
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
-    let responseJson = await response.json();
-
-    return { token: responseJson.idToken, expiresIn: responseJson.expiresIn };
+    // 자동로그인 방지
+    return { token: user.idToken, expiresIn: user.expiresIn };
   } catch (error) {
-    throw error;
+    // 정의된 error case에 해당하는 errorMessage throw;
+    firebaseErrorHandler(error.code, AUTH_ERROR);
   }
 };
 
-export const getUserInfoById = async (id) => {
+// eamil , password로 회원가입
+export const addUser = async (info) => {
   try {
-    let url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_KEY}`;
-    let response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        idToken: id,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    const auth = getAuth();
 
-    if (!response.ok) {
-      let errorMessage = "request is failed!";
-      let responseJson = await response.json();
-
-      if (responseJson && responseJson.error?.message)
-        errorMessage = responseJson?.error.message;
-      throw new Error(errorMessage);
-    }
-    let responseJson = await response.json();
-
-    return { userId: responseJson.users[0].localId };
-  } catch (error) {
-    throw error;
+    await createUserWithEmailAndPassword(auth, info.email, info.password).then(
+      (userCredential) => {
+        return userCredential.user;
+      }
+    );
+  } catch (e) {
+    // 정의된 error case에 해당하는 errorMessage throw;
+    firebaseErrorHandler(e.code, AUTH_ERROR);
   }
 };

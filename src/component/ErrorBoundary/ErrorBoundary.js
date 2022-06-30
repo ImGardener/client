@@ -21,9 +21,9 @@ class ErrorBoundary extends React.Component {
       return (
         <Modal
           type="ERROR"
-          message="로그인이 필요한 기능입니다."
+          message="오류가 발생했습니다. "
           onClose={() => {
-            this.props.history.replace("/login");
+            this.props.history.replace("/");
             this.setState({ hasError: false });
           }}
         />

@@ -42,6 +42,7 @@
    2. 꽃 설명
 
 
+
 <br/><br/>
 ## 🔨 Technology Stack
 
@@ -51,7 +52,18 @@ Backend : firebase Realtime Database , Authentication
 
 Database : firebase Realtime Database
 
+
+# 결함
+
+- ~~환경변수를 ignore 처리하더라도 url에 포함되어 노출되고 있음~~(auth.uid 인증 추가 )
+- 자동로그인 시 깜박이는 현상이 있음. 비동기 처리 필요.
+- ~~회원가입시 local에 auth정보가 남는현상 처리~~(06.27 )
+- 검색 리스트 최적화 필요
+
+
+
 <br/><br/>
+
 ## 🤔 Todo
 
 1. 식물 관리 기능 추가
@@ -60,6 +72,8 @@ Database : firebase Realtime Database
 4. 북마크 조회 기능 개선 > 현재 리스트 개선 진행중
 5. 회원 닉네임 등록(회원가입 시 등록)
 6. 관리자 기능
+7. useAysnc 훅 만들기
+
 
 <br/><br/>
 

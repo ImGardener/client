@@ -1,3 +1,4 @@
 node_modules
 src/utils/key-store.js
 .env
+src/setupProxy.js

@@ -1,0 +1,18 @@
+[[redirects]]
+  from = "/tDflower/*"
+  to = "http://apis.data.go.kr/1390804/NihhsTodayFlowerInfo01/:splat"
+  status = 200
+  force = true
+
+  
+  [[redirects]]
+  from = "/nonsaro/*"
+  to =  "http://api.nongsaro.go.kr/service/:splat"
+  status = 200
+  force = true
+
+
+  [[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
