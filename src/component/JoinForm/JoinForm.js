@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import useInput from "../../hoc/use-input";
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
@@ -5,16 +8,14 @@ import classes from "./JoinForm.module.css";
 import { addUser } from "../../utils/user-apis";
 import Modal from "../UI/Modal/Modal";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import useHttp from "../../hoc/use-https";
-import { useDispatch } from "react-redux";
 import { logoutThunk } from "../../store/modules/auth";
 
 const JoinForm = () => {
   const [modal, setModal] = useState(null);
-  const { requestHandler, status, error, data } = useHttp();
+  const { requestHandler, status, error } = useHttp();
   const dispatch = useDispatch();
   const {
     value: enteredEmail,
@@ -51,7 +52,7 @@ const JoinForm = () => {
         message: error,
       });
     }
-  }, [status]);
+  }, [status, dispatch, error, history]);
   const submitJoinForm = async (e) => {
     e.preventDefault();
     await requestHandler(addUser, {

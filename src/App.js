@@ -1,15 +1,14 @@
+import { useEffect } from "react";
 import "./App.css";
+import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import Search from "./pages/Search";
 import Layout from "./component/UI/Layout/Layout";
-
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Join from "./pages/Join";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { loginSuccess } from "./store/modules/auth";
-import MyPlantList from "./component/Plants/MyPlantList";
+import MyCollections from "./component/MyCollection/MyCollections";
 import ErrorBoundary from "./component/ErrorBoundary/ErrorBoundary";
 import { getAuth } from "firebase/auth";
 
@@ -42,8 +41,8 @@ function App() {
             <Route path="/join" exact>
               <Join />
             </Route>
-            <Route path="/myPlants" exact>
-              <MyPlantList />
+            <Route path="/mycollection" exact>
+              <MyCollections />
             </Route>
           </Switch>
         </ErrorBoundary>

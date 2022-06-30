@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import Modal from "../UI/Modal/Modal";
@@ -7,16 +9,12 @@ import classes from "./LoginForm.module.css";
 import useInput from "../../hoc/use-input";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import { useDispatch, useSelector } from "react-redux";
 import { loginThunk, resetError } from "../../store/modules/auth";
 const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
   const [modal, setModal] = useState(null);
-  const isLoading = useSelector((state) => state.auth.loading);
-  const error = useSelector((state) => state.auth.error);
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const { isLoading, error, isLogin } = useSelector((state) => state.auth);
 
   const changeJoinFormHandler = () => {
     history.push("/join");

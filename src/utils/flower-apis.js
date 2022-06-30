@@ -33,6 +33,7 @@ export const getTodayFlower = async (today) => {
   }
 };
 
+// load가 오래걸리는 경우가 빈번해서 TIMEOUT 지정
 const fetchWrapper = async (url, requestConfig = {}, ms = 2000) => {
   if (!url) throw new Error("INVALID URL");
   return new Promise((resolve, reject) => {
