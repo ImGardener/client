@@ -1,16 +1,17 @@
-import { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import "./App.css";
 import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import Search from "./pages/Search";
 import Layout from "./component/UI/Layout/Layout";
 import Main from "./pages/Main";
-import Login from "./pages/Login";
-import Join from "./pages/Join";
 import { loginSuccess } from "./store/modules/auth";
 import MyCollections from "./component/MyCollection/MyCollections";
 import ErrorBoundary from "./component/ErrorBoundary/ErrorBoundary";
 import { getAuth } from "firebase/auth";
+import LoadingSpinner from "./component/UI/Spinner/LoadingSpinner";
+const Join = React.lazy(() => import("./pages/Join"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Search = React.lazy(() => import("./pages/Search"));
 
 function App() {
   const dispatch = useDispatch();
@@ -28,23 +29,25 @@ function App() {
     <div className="App">
       <Layout>
         <ErrorBoundary>
-          <Switch>
-            <Route path="/" exact>
-              <Main />
-            </Route>
-            <Route path="/search" exact>
-              <Search />
-            </Route>
-            <Route path="/login" exact>
-              <Login />
-            </Route>
-            <Route path="/join" exact>
-              <Join />
-            </Route>
-            <Route path="/mycollection" exact>
-              <MyCollections />
-            </Route>
-          </Switch>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Switch>
+              <Route path="/" exact>
+                <Main />
+              </Route>
+              <Route path="/search" exact>
+                <Search />
+              </Route>
+              <Route path="/login" exact>
+                <Login />
+              </Route>
+              <Route path="/join" exact>
+                <Join />
+              </Route>
+              <Route path="/mycollection" exact>
+                <MyCollections />
+              </Route>
+            </Switch>
+          </Suspense>
         </ErrorBoundary>
       </Layout>
     </div>
