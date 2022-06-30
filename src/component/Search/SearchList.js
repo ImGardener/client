@@ -19,9 +19,11 @@ const SearchList = () => {
   const location = useLocation();
   const history = useHistory();
   const searchWord = location.state?.searchWord;
-  const { plants, loading, totalCount, error } = useSelector((state) => ({
-    ...state.plants,
-  }));
+
+  const plants = useSelector((state) => state.plants.plants);
+  const loading = useSelector((state) => state.plants.loading);
+  const totalCount = useSelector((state) => state.plants.totalCount);
+  const error = useSelector((state) => state.plants.error);
 
   // first Load
   const submitFormHandler = useCallback(

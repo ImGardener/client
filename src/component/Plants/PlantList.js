@@ -1,3 +1,4 @@
+import React from "react";
 import classes from "./PlantList.module.css";
 import PlantItem from "./PlantItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,4 +34,4 @@ const PlantList = (props) => {
     </ul>
   );
 };
-export default PlantList;
+export default React.memo(PlantList);

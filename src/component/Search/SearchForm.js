@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
 import Button from "../UI/Button/Button";
@@ -31,13 +31,13 @@ const SearchForm = (props) => {
       });
   }, []);
 
-  const insttChangeHandler = (event) => {
+  const insttChangeHandler = useCallback((event) => {
     setInstt(event.target.value);
-  };
+  }, []);
 
-  const categoryChangeHandler = (event) => {
+  const categoryChangeHandler = useCallback((event) => {
     setCategory(event.target.value);
-  };
+  }, []);
   const searchWordChangeHandler = (event) => {
     setSearchWord(event.target.value);
   };
@@ -95,4 +95,4 @@ const SearchForm = (props) => {
     </>
   );
 };
-export default SearchForm;
+export default React.memo(SearchForm);
