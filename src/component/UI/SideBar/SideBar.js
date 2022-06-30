@@ -13,18 +13,22 @@ import Button from "../Button/Button";
 
 const SideMnu = () => {
   const history = useHistory();
-  const [searchWord, setSearchWord] = useState(null);
+  const [searchWord, setSearchWord] = useState("");
   const [menuActive, setMenuActive] = useState(false);
 
   const submitsearchFromHandler = (e) => {
     e.preventDefault();
     history.push("/search", { searchWord: searchWord });
+    setSearchWord("");
   };
   const changeSearchInputHandler = (e) => {
     setSearchWord(e.target.value);
   };
   const showSideBarHandler = () => {
     setMenuActive((prevState) => !prevState);
+  };
+  const hideHandler = () => {
+    setMenuActive(false);
   };
   return (
     <>
@@ -41,6 +45,7 @@ const SideMnu = () => {
                 type: "text",
                 name: "search",
                 placeholder: "검색하기",
+                value: searchWord,
               }}
               onChange={changeSearchInputHandler}
               inputClassName={classes["search__input"]}
@@ -50,16 +55,24 @@ const SideMnu = () => {
         </section>
         <ul className={classes["side-menu"]}>
           <li className={classes["side-menu__item"]}>
-            <Link to={"/search"} className={classes["item__title"]}>
+            <Link
+              to={"/search"}
+              className={classes["item__title"]}
+              onClick={hideHandler}
+            >
               <FontAwesomeIcon icon={faSearch} />
               검색하기
             </Link>
           </li>
 
           <li className={classes["side-menu__item"]}>
-            <Link to={"/myPlants"} className={classes["item__title"]}>
+            <Link
+              to={"/mycollection"}
+              className={classes["item__title"]}
+              onClick={hideHandler}
+            >
               <FontAwesomeIcon icon={faSpa} />
-              My Plants
+              My Collection
             </Link>
           </li>
         </ul>
@@ -76,4 +89,4 @@ const SideMnu = () => {
   );
 };
 
-export default SideMnu;
+export default React.memo(SideMnu);
