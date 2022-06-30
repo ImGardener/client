@@ -2,6 +2,7 @@ import { DEFAULT_ERROR } from "./errorCase";
 import { parseXmlToJson } from "./xmlparser";
 const NONGSARO_KEY = process.env.REACT_APP_NONGSARO_KEY;
 
+// 기관명 조회 API
 export const getInsttList = async () => {
   try {
     let url = "/nonsaro/varietyInfo/insttList?apiKey=" + NONGSARO_KEY;
@@ -24,7 +25,7 @@ export const getInsttList = async () => {
     throw error;
   }
 };
-
+// 카테고리 조회 API
 export const getCategoryList = async () => {
   try {
     let url = "/nonsaro/varietyInfo/mainCategoryList?apiKey=" + NONGSARO_KEY;
@@ -48,17 +49,26 @@ export const getCategoryList = async () => {
   }
 };
 
-export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
+// 품종 조회 API
+export const getVarietyList = async ({
+  category,
+  insttName,
+  svcCodeNm,
+  pageNo,
+}) => {
   try {
     const insttNameParam = insttName ? `&insttName=${insttName}` : "";
     const categoryParam = category ? `&category=${category}` : "";
+    const svcCodeNmParam = `&svcCodeNm=${svcCodeNm}`;
+    const pageNoParam = `&pageNo=${pageNo}`;
     let url =
       "/nonsaro/varietyInfo/varietyList?apiKey=" +
       NONGSARO_KEY +
-      "&svcCodeNm=" +
-      svcCodeNm +
+      svcCodeNmParam +
       insttNameParam +
-      categoryParam;
+      categoryParam +
+      pageNoParam +
+      "&numOfRows=10";
     const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -66,24 +76,24 @@ export const getVarietyList = async ({ category, insttName, svcCodeNm }) => {
 
     const result = await nongsaroDataParsing(response);
 
-    let preVarieties = {};
     let varieties = [];
-    if (result.body.items.totalCount < 1) return [];
-    result.body.items.item.forEach((variety) => {
-      if (!preVarieties[variety.prdlstCtgCode]) {
-        preVarieties[variety.prdlstCtgCode] = {
+
+    // 남은 length 가 1일경우 객체타입으로 response.
+    if (result.body.items.totalCount - (pageNo - 1) * 10 === 1) {
+      result.body.items.item = [result.body.items.item];
+    }
+    if (result.body.items.totalCount > 1) {
+      result.body.items.item.forEach((variety) => {
+        varieties.push({
           description: variety.mainChartrInfo,
           name: variety.svcCodeNm,
-          plantId: variety.prdlstCtgCode,
+          plantId: variety.cntntsNo,
           instt: variety.unbrngInsttInfo,
           imgLink: variety.imgFileLink,
-        };
-      }
-    });
-    for (let variety of Object.keys(preVarieties)) {
-      varieties.push(preVarieties[variety]);
+        });
+      });
     }
-    return varieties;
+    return { plants: varieties, totalCount: result.body.items.totalCount };
   } catch (error) {
     throw error;
   }
@@ -98,6 +108,7 @@ const nongsaroDataParsing = async (response) => {
   const xml = new DOMParser().parseFromString(data, "text/xml");
 
   const result = parseXmlToJson(xml).response;
+  if (!result) throw new Error(DEFAULT_ERROR);
 
   if (result.header.resultCode !== "00") {
     throw new Error(result.headers.resultMsg);
