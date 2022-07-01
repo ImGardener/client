@@ -25,7 +25,8 @@
   font-size: var(--font-regular);
 }
 .flower__img {
-  width: 50%;
+  width: 500px;
+  max-width: 50%;
   border-radius: var(--size-border-radius-large);
 }
 
@@ -54,5 +55,8 @@
     flex-direction: column;
     margin-top: var(--base-blank-small);
     padding: var(--base-blank-small);
+  }
+  .flower__img {
+    max-width: 80%;
   }
 }
