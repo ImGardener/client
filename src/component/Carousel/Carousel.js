@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react";
 
 import classes from "./Carousel.module.css";
-import carousel1 from "../../assets/carousel1.jpg";
-import carousel2 from "../../assets/carousel2.jpg";
+import carousel1 from "../../assets/carousel1.webp";
+import carousel2 from "../../assets/carousel2.webp";
 
 import Sliders from "./Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,12 +37,17 @@ const Carousel = () => {
           <Sliders imgs={imgs} />
         </div>
         <button
+          aria-label="carousel-left-btn"
           className={classes["slider__btn--left"]}
           onClick={previousSlide}
         >
           <FontAwesomeIcon icon={faCaretLeft} />
         </button>
-        <button className={classes["slider__btn--right"]} onClick={nextSlide}>
+        <button
+          aria-label="carousel-right-btn"
+          className={classes["slider__btn--right"]}
+          onClick={nextSlide}
+        >
           <FontAwesomeIcon icon={faCaretRight} />
         </button>
       </div>
