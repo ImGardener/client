@@ -5,13 +5,13 @@ import { Switch, Route } from "react-router-dom";
 import Layout from "./component/UI/Layout/Layout";
 import Main from "./pages/Main";
 import { loginSuccess } from "./store/modules/auth";
-import MyCollections from "./component/MyCollection/MyCollections";
 import ErrorBoundary from "./component/ErrorBoundary/ErrorBoundary";
 import { getAuth } from "firebase/auth";
 import LoadingSpinner from "./component/UI/Spinner/LoadingSpinner";
 const Join = React.lazy(() => import("./pages/Join"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Search = React.lazy(() => import("./pages/Search"));
+const MyCollections = React.lazy(() => import("./pages/MyCollections"));
 
 function App() {
   const dispatch = useDispatch();
