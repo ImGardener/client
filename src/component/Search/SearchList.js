@@ -9,7 +9,7 @@ import { resetPlants } from "../../store/actions/plants";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import SearchForm from "./SearchForm";
 import PlantList from "../Plants/PlantList";
-import useIntersectionObserver from "../../hoc/useIntersectionObserver";
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import Modal from "../UI/Modal/Modal";
 const SearchList = () => {
   const [modal, setModal] = useState(null);

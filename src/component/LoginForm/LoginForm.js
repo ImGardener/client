@@ -6,7 +6,7 @@ import Input from "../UI/Input/Input";
 import Modal from "../UI/Modal/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import classes from "./LoginForm.module.css";
-import useInput from "../../hoc/use-input";
+import useInput from "../../hooks/use-input";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { loginThunk, resetError } from "../../store/modules/auth";

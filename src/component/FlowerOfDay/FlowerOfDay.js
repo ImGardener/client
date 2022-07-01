@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import useHttp from "../../hoc/use-https";
+import useHttp from "../../hooks/use-https";
 import img from "../../assets/sample_plants.jpg";
 
 const FlowerOfDay = () => {

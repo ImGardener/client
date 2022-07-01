@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import useInput from "../../hoc/use-input";
+import useInput from "../../hooks/use-input";
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import classes from "./JoinForm.module.css";
@@ -10,7 +10,7 @@ import Modal from "../UI/Modal/Modal";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
-import useHttp from "../../hoc/use-https";
+import useHttp from "../../hooks/use-https";
 import { logoutThunk } from "../../store/modules/auth";
 
 const JoinForm = () => {
