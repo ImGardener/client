@@ -12,7 +12,7 @@ const ModalUI = (props) => {
     <div className={classes["modal-ui"]}>
       <div className={classes["modal-ui__content"]}>
         <FontAwesomeIcon icon={icon} className={classes.icon} />
-        <p className={classes["modal-ui__message"]}> {props.message}</p>
+        {props.body}
       </div>
       <Button className={classes["modal-ui__btn"]} onClick={props.onClose}>
         닫기
