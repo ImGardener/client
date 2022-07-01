@@ -6,7 +6,6 @@ import { useState } from "react";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import useHttp from "../../hoc/use-https";
 import default_img from "../../assets/default-flower.webp";
-import default_img_png from "../../assets/default-flower.png";
 
 const FlowerOfDay = () => {
   const { requestHandler, error, status, data } = useHttp();
@@ -46,11 +45,12 @@ const FlowerOfDay = () => {
         <p className={classes["flower__content"]}>{flowerInfo?.content}</p>
       </div>
       <img
+        loading="lazy"
         className={classes["flower__img"]}
         src={flowerInfo.img}
         onError={(e) => {
           console.log("err");
-          e.target.src = default_img_png;
+          e.target.src = default_img;
           e.target.onerror = null;
         }}
         alt="오늘의 꽃"

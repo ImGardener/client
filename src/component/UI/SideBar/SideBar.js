@@ -78,7 +78,7 @@ const SideMnu = () => {
         </ul>
       </div>
       <Button
-        aria-label="sidebar-toggle-btn"
+        ariaLabel="sidebar-toggle-btn"
         className={`${classes["toggle-btn"]} ${
           menuActive && classes["active"]
         }`}
