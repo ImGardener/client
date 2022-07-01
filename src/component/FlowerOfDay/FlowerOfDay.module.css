@@ -25,7 +25,8 @@
   font-size: var(--font-regular);
 }
 .flower__img {
-  width: 500px;
+  width: 600px;
+  aspect-ratio: 600/339;
   max-width: 50%;
   border-radius: var(--size-border-radius-large);
 }
