@@ -28,7 +28,7 @@
 } */
 .header__btn {
   background-color: white;
-  border: 2px solid var(--color-main-green);
+  border: 3px solid var(--color-main-green);
   color: var(--color-main-green);
   box-shadow: none;
 }

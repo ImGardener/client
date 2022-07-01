@@ -9,7 +9,9 @@
 }
 .plant__image {
   width: 100%;
-  height: auto;
+  /* height: auto; */
+  width: 800px;
+  aspect-ratio: 2;
   border-radius: var(--size-border-radius-large);
   position: relative;
   -webkit-user-drag: none;
@@ -19,18 +21,21 @@
   width: 100%;
   transition: transform 0.5s ease-in-out;
   margin: auto;
+  align-items: center;
+  /* justify-content: center; */
   /* gap: 0px; */
 }
 .slider__btn--left,
 .slider__btn--right {
   position: absolute;
-  top: 50%;
+  /* top: 50%; */
   border: none;
   background-color: transparent;
-  transform: translateY(-50%);
+  /* transform: translateY(-50%); */
   font-size: var(--font-large);
   color: white;
   cursor: pointer;
+  height: 100%;
 }
 .slider__btn--left {
   left: var(--base-blank-small);
@@ -43,8 +48,8 @@
   .carousel {
     width: 80%;
   }
-  .slider__btn--left,
-  .slider__btn--right {
-    font-size: var(--font-small);
+  .plant__image {
+    width: 100%;
+    aspect-ratio: 2;
   }
 }
