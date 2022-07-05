@@ -5,6 +5,7 @@ const Button = (props) => {
   const styles = `${classes.button} ${props.className}`;
   return (
     <button
+      aria-label={props.ariaLabel}
       disabled={props.disabled}
       onClick={props.onClick}
       className={styles}

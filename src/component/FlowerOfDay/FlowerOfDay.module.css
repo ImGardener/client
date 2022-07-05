@@ -25,7 +25,7 @@
   font-size: var(--font-regular);
 }
 .flower__img {
-  width: 50%;
+  max-width: 50%;
   border-radius: var(--size-border-radius-large);
 }
 
@@ -47,6 +47,12 @@
     font-size: 1rem;
     line-height: 1.5rem;
   }
+  .flower__img {
+    max-width: 50%;
+    aspect-ratio: 1.7;
+    height: auto;
+    border-radius: var(--size-border-radius-large);
+  }
 }
 
 @media screen and (max-width: 760px) {
@@ -54,5 +60,8 @@
     flex-direction: column;
     margin-top: var(--base-blank-small);
     padding: var(--base-blank-small);
+  }
+  .flower__img {
+    max-width: 80%;
   }
 }

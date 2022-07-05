@@ -33,7 +33,7 @@ const SideMnu = () => {
   return (
     <>
       <div className={`${classes.sidenav} ${menuActive && classes["active"]}`}>
-        <section id="search" alt="" className={classes["search"]}>
+        <section alt="" className={classes["search"]}>
           <form
             method="post"
             action="#"
@@ -43,7 +43,7 @@ const SideMnu = () => {
             <Input
               input={{
                 type: "text",
-                name: "search",
+                name: "main-search",
                 placeholder: "검색하기",
                 value: searchWord,
               }}
@@ -78,6 +78,7 @@ const SideMnu = () => {
         </ul>
       </div>
       <Button
+        ariaLabel="sidebar-toggle-btn"
         className={`${classes["toggle-btn"]} ${
           menuActive && classes["active"]
         }`}

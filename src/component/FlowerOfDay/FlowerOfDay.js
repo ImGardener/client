@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import useHttp from "../../hooks/use-https";
-import img from "../../assets/sample_plants.jpg";
+
+import useHttp from "../../hoc/use-https";
+import default_img from "../../assets/default-flower.webp";
 
 const FlowerOfDay = () => {
   const { requestHandler, error, status, data } = useHttp();
@@ -25,8 +26,8 @@ const FlowerOfDay = () => {
       setFlowerInfo(data);
     } else if (error) {
       setFlowerInfo({
-        name: "거베라",
-        img: img,
+        name: "데이지",
+        img: default_img,
       });
     }
   }, [status, error, data]);
@@ -45,8 +46,14 @@ const FlowerOfDay = () => {
         <p className={classes["flower__content"]}>{flowerInfo?.content}</p>
       </div>
       <img
+        loading="lazy"
         className={classes["flower__img"]}
         src={flowerInfo.img}
+        onError={(e) => {
+          console.log("err");
+          e.target.src = default_img;
+          e.target.onerror = null;
+        }}
         alt="오늘의 꽃"
       />
     </div>
