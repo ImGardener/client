@@ -32,7 +32,6 @@ const MyCollection = () => {
   if (loading) {
     return <LoadingSpinner />;
   }
-  console.log(collections);
   return <PlantList plants={collections} error={error} />;
 };
 
