@@ -11,8 +11,6 @@ const Modal = (props) => {
   const { body, callback } = useContext(ModalStateContext);
   const { close } = useContext(ModalDispatchContext);
   const onCloseHandler = async () => {
-    console.log("callback", callback);
-
     if (callback && typeof callback === "function") await callback();
     close();
   };
