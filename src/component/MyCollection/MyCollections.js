@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import PlantList from "../Plants/PlantList";
-import Modal from "../UI/Modal/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { getAuth } from "firebase/auth";
 import { getCollectionThunk } from "../../store/modules/collection";
+import useModal from "../../hooks/use-modal";
 
 const MyCollection = () => {
-  let [modal, setModal] = useState(null);
   const history = useHistory();
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const { openModal } = useModal();
   const { collections, loading, error } = useSelector(
     (state) => state.collections
   );
@@ -24,25 +24,15 @@ const MyCollection = () => {
       if (user) {
         token && dispatch(getCollectionThunk());
       } else {
-        setModal({
-          message: "로그인이 필요합니다.",
-          callback: () => {
-            history.replace("/login");
-            setModal(null);
-          },
-        });
+        openModal("로그인이 필요합니다.", history.replace("/login"));
       }
     });
-  }, [token, history, dispatch]);
+  }, [token, history, dispatch, openModal]);
 
   if (loading) {
     return <LoadingSpinner />;
   }
-
-  if (modal) {
-    return <Modal {...modal} onClose={modal.callback} />;
-  }
-
+  console.log(collections);
   return <PlantList plants={collections} error={error} />;
 };
 

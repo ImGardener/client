@@ -1,36 +1,32 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
-import Modal from "../UI/Modal/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import classes from "./LoginForm.module.css";
-import useInput from "../../hoc/use-input";
+import useInput from "../../hooks/use-input";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { loginThunk, resetError } from "../../store/modules/auth";
+import useModal from "../../hooks/use-modal";
 const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [modal, setModal] = useState(null);
   const { isLoading, error, isLogin } = useSelector((state) => state.auth);
-
+  const { openModal } = useModal();
   const changeJoinFormHandler = () => {
     history.push("/join");
   };
 
   useEffect(() => {
     if (error) {
-      setModal({
-        type: "ERROR",
-        message: error,
-      });
+      openModal(error);
     }
     return () => {
       dispatch(resetError());
     };
-  }, [error, dispatch]);
+  }, [error, dispatch, openModal]);
 
   useEffect(() => {
     if (isLogin) {
@@ -114,18 +110,6 @@ const LoginForm = () => {
           로그인
         </Button>
       </form>
-      {modal && (
-        <Modal
-          onClose={
-            modal.callback ||
-            (() => {
-              setModal(null);
-            })
-          }
-          type={modal?.type}
-          message={modal.message}
-        />
-      )}
     </div>
   );
 };

@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { getTodayFlower } from "../../utils/flower-apis";
 import { useState } from "react";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
-import useHttp from "../../hoc/use-https";
+
+import useHttp from "../../hooks/use-https";
 import default_img from "../../assets/default-flower.webp";
 
 const FlowerOfDay = () => {

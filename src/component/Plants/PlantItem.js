@@ -3,12 +3,11 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { addCollection, removeCollection } from "../../utils/collection-apis";
-import Modal from "../UI/Modal/Modal";
 import classes from "./PlantItem.module.css";
-
+import useModal from "../../hooks/use-modal";
 const PlantItem = (props) => {
   const [collection, setCollection] = useState(props.collectionId);
-  const [modal, setModal] = useState(null);
+  const { openModal } = useModal();
 
   const collectionStyle = `${classes["collection__btn"]} ${
     collection && classes["active"]
@@ -21,13 +20,7 @@ const PlantItem = (props) => {
   }, [isLogin]);
   const changeCollectionHandler = async () => {
     if (!isLogin) {
-      return setModal({
-        message: "로그인이 필요합니다.",
-        type: "ERROR",
-        callback: () => {
-          setModal(null);
-        },
-      });
+      return openModal("로그인이 필요한 서비스입니다.");
     }
     if (!collection) {
       let collectionId = await addCollection({
@@ -62,7 +55,6 @@ const PlantItem = (props) => {
           </button>
         </div>
       </li>
-      {modal && <Modal {...modal} onClose={modal.callback} />}
     </>
   );
 };
