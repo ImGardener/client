@@ -6,15 +6,15 @@ import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
 import classes from "./JoinForm.module.css";
 import { addUser } from "../../utils/user-apis";
-import Modal from "../UI/Modal/Modal";
 import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { isEmailValid, isPasswordValid } from "../../utils/validation";
 import useHttp from "../../hooks/use-https";
 import { logoutThunk } from "../../store/modules/auth";
-
+import useModal from "../../hooks/use-modal";
 const JoinForm = () => {
-  const [modal, setModal] = useState(null);
+  const { openModal } = useModal();
+
   const { requestHandler, status, error } = useHttp();
   const dispatch = useDispatch();
   const {
@@ -38,21 +38,11 @@ const JoinForm = () => {
     if (status === "SUCCESS") {
       // 회원가입 시 다시 로그인 유도를 위한 logout처리
       dispatch(logoutThunk());
-      setModal({
-        type: "SUCCESS",
-        message: "가입되었습니다!",
-        callback: () => {
-          setModal(null);
-          history.replace("/login");
-        },
-      });
+      openModal("가입되었습니다.", () => history.replace("/login"));
     } else if (error) {
-      setModal({
-        type: "ERROR",
-        message: error,
-      });
+      openModal(error);
     }
-  }, [status, dispatch, error, history]);
+  }, [openModal, status, dispatch, error, history]);
   const submitJoinForm = async (e) => {
     e.preventDefault();
     await requestHandler(addUser, {
@@ -104,18 +94,6 @@ const JoinForm = () => {
           회원가입
         </Button>
       </form>
-      {modal && (
-        <Modal
-          message={modal.message}
-          type={modal.type}
-          onClose={
-            modal.callback ||
-            (() => {
-              setModal(null);
-            })
-          }
-        />
-      )}
     </div>
   );
 };

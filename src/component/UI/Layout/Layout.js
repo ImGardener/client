@@ -2,6 +2,8 @@ import classes from "./Layout.module.css";
 import Headers from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
 const Layout = (props) => {
+  console.log("Layout rendering?");
+
   return (
     <>
       <Headers />

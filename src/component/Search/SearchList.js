@@ -10,9 +10,7 @@ import LoadingSpinner from "../UI/Spinner/LoadingSpinner";
 import SearchForm from "./SearchForm";
 import PlantList from "../Plants/PlantList";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
-import Modal from "../UI/Modal/Modal";
 const SearchList = () => {
-  const [modal, setModal] = useState(null);
   const currentPage = useRef(1);
   const currentParams = useRef();
   const dispatch = useDispatch();
@@ -78,17 +76,6 @@ const SearchList = () => {
       {content}
       {!loading && plants && plants.length > 0 && <div ref={serRef} />}
       {loading && currentPage.current > 1 && <LoadingSpinner />}
-      {modal && (
-        <Modal
-          {...modal}
-          onClose={
-            modal?.callback ||
-            (() => {
-              setModal(null);
-            })
-          }
-        />
-      )}
     </Fragment>
   );
 };

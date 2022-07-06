@@ -3,18 +3,16 @@ import classes from "./SearchForm.module.css";
 import SelectBox from "../UI/SelectBox/SelectBox";
 import Button from "../UI/Button/Button";
 import Input from "../UI/Input/Input";
-import Modal from "../UI/Modal/Modal";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getCategoryList, getInsttList } from "../../utils/search-apis";
-
+import useModal from "../../hooks/use-modal";
 const SearchForm = (props) => {
-  const [modal, setModal] = useState(null);
   const [insttList, setInsttList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [instt, setInstt] = useState("");
   const [category, setCategory] = useState("");
   const [searchWord, setSearchWord] = useState("");
-
+  const { openModal } = useModal();
   useEffect(() => {
     Promise.all([getInsttList(), getCategoryList()])
       .then(([reponse1, reponse2]) => {
@@ -22,12 +20,7 @@ const SearchForm = (props) => {
         setCategoryList(reponse2);
       })
       .catch((e) => {
-        return setModal({
-          message: e.message,
-          callback: () => {
-            setModal(false);
-          },
-        });
+        return openModal(e.message);
       });
   }, []);
 
@@ -43,13 +36,9 @@ const SearchForm = (props) => {
   };
   const submitSearchFormHandler = async (e) => {
     e.preventDefault();
+
     if (searchWord.trim() === "") {
-      return setModal({
-        message: "검색어를 입력하세요.",
-        callback: () => {
-          setModal(false);
-        },
-      });
+      return openModal("검색어를 입력하세요.");
     }
     const config = {
       insttName: instt,
@@ -91,7 +80,6 @@ const SearchForm = (props) => {
           <Button className={classes["search__controls"]}>Search</Button>
         </form>
       </div>
-      {modal && <Modal {...modal} onClose={modal.callback} />}
     </>
   );
 };
