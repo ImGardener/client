@@ -55,7 +55,7 @@ Database : firebase Realtime Database
 
 - modal 사용방식 변경(local > context) + useModal 훅 추가 (0706)
 
-<br/><br/>
+  <br/><br/>
 
 # 결함
 
@@ -63,18 +63,19 @@ Database : firebase Realtime Database
 - 자동로그인 시 깜박이는 현상이 있음. 비동기 처리 필요.
 - ~~회원가입시 local에 auth정보가 남는현상 처리~~(06.27 )
 - ~~검색 리스트 최적화 필요~~
+- ~~회원가입 폼 초기화 오류 수정~~(07.08)
 
-<br/><br/>
+  <br/><br/>
 
 ## 🤔 Todo
 
 1. 식물 관리 기능 추가
 2. ~~node 서버 구축 - cors 대응~~ http middleware proxy로 해결하
 3. ~~환경변수 파일 설정~~ hosting시 별도의 환경변수 설정 및 env파일처리로 해결
-4. 북마크 조회 기능 개선 > 현재 리스트 개선 진행중
+4. ~~북마크 조회 기능 개선 > 현재 리스트 개선 진행중~~ IntersectionObserver로 개선.
 5. 회원 닉네임 등록(회원가입 시 등록)
 6. 관리자 기능
-7. useAysnc 훅 만들기
+7. ~~ useAysnc 훅 만들기 ~~ usehttp hook 추가
 
 <br/><br/>
 

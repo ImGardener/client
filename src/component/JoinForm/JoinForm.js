@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import useInput from "../../hooks/use-input";
@@ -23,6 +23,7 @@ const JoinForm = () => {
     valusIsValid: enteredEmailIsValid,
     changeValueHandler: emailChangeHandler,
     focusHandler: emailFocusHandler,
+    reset: resetEmail,
   } = useInput(isEmailValid);
   const {
     value: enteredPassword,
@@ -30,6 +31,7 @@ const JoinForm = () => {
     valusIsValid: enteredPasswordIsValid,
     changeValueHandler: passwordChangeHandler,
     focusHandler: passwordFocusHandler,
+    reset: resetPassword,
   } = useInput(isPasswordValid);
 
   const history = useHistory();
@@ -49,6 +51,8 @@ const JoinForm = () => {
       email: enteredEmail,
       password: enteredPassword,
     });
+    resetPassword();
+    resetEmail();
   };
 
   if (status === "PENDING") return <LoadingSpinner />;
@@ -62,6 +66,7 @@ const JoinForm = () => {
             type: "email",
             name: "email",
             placeholder: "email",
+            value: enteredEmail,
           }}
           onChange={emailChangeHandler}
           onBlur={emailFocusHandler}
@@ -78,6 +83,7 @@ const JoinForm = () => {
             name: "password",
             placeholder: "password",
             autoComplete: "on",
+            value: enteredPassword,
           }}
           onChange={passwordChangeHandler}
           onBlur={passwordFocusHandler}
