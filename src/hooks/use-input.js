@@ -12,12 +12,17 @@ const useInput = (validFunc) => {
   const focusHandler = (e) => {
     setFocus(true);
   };
+  const reset = () => {
+    setValue("");
+    setFocus(false);
+  };
   return {
     value,
     hasError,
     valusIsValid,
     changeValueHandler,
     focusHandler,
+    reset,
   };
 };
 
